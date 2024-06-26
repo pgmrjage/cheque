@@ -280,3 +280,24 @@ function numberToWords(num) {
         // Send the form data
         xhr.send(formData);
     }
+
+
+
+
+
+
+
+
+
+    // JS FOR ADDING NEW ACCOUNT NUMBER
+    // =============================================
+    function toggleNewAccountInput() {
+        var select = document.getElementById("accountCodeInput");
+        var newAccountInputGroup = document.getElementById("newAccountInputGroup");
+
+        if (select.value === "addNew") {
+            newAccountInputGroup.classList.remove("hidden");
+        } else {
+            newAccountInputGroup.classList.add("hidden");
+        }
+    }

@@ -301,7 +301,7 @@ button {
     background-color: #4CAF50; /* Green background */
     border: none;             /* Remove borders */
     color: white;             /* White text */
-    padding: 15px 32px;       /* Some padding */
+    /* padding: 15px 32px;       Some padding */
     text-align: center;       /* Centered text */
     text-decoration: none;    /* Remove underline */
     display: inline-block;    /* Make the button inline-block */
@@ -318,4 +318,69 @@ button {
 
 
 
+
+
+/* CSS FOR ADDING NEW ACCOUNT NUMBER */
+.hidden {
+    display: none;
+}
+
+
+
+
+
+/* CSS FOR SEARCH BAR */
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+  }
+  
+  .searchinput {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: #f4f2f2;
+    border: none;
+    color: #646464;
+    padding: 0.7rem 1rem;
+    border-radius: 30px;
+    width: 12em;
+    transition: all ease-in-out .5s;
+    margin-right: -2rem;
+  }
+  
+  .searchinput:hover, .searchinput:focus {
+    box-shadow: 0 0 1em #00000013;
+  }
+  
+  .searchinput:focus {
+    outline: none;
+    background-color: #f0eeee;
+  }
+  
+  .searchinput::-webkit-input-placeholder {
+    font-weight: 100;
+    color: #ccc;
+  }
+  
+  .searchinput:focus + .searchbutton {
+    background-color: #f0eeee;
+  }
+  
+  .searchbutton {
+    border: none;
+    background-color: #f4f2f2;
+    margin-top: .1em;
+  }
+  
+  .searchbutton:hover {
+    cursor: pointer;
+  }
+  
+  .searchicon {
+    height: 1.3em;
+    width: 1.3em;
+    fill: #b4b4b4;
+  }
 
