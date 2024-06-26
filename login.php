@@ -1,3 +1,60 @@
+<?php
+session_start();    // start session at the beginning
+
+$server = "";
+$username = "root";
+$password = "";
+$database = "";
+$conn = new mysqli($server, $username, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+  
+  if (isset($_POST[""])) {
+    if () {
+      echo "Both fields are required";
+      exit(); // Exit after displaying error
+    }
+
+    // No need to sanitize IDnum as it's an integer
+
+  $sql = "SELECT IDnum, password, type FROM users WHERE IDnum = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $IDnum); // Assuming IDnum is an integer
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $data = $result->fetch_assoc();
+
+  if ($data == NULL) {
+    echo '<script>alert("No data found"); window.location.href = "login.php";</script>';
+    exit(); // Exit if no data found
+  }
+
+  // Directly compare the password from the database with the entered password
+  if ($password != $data["password"]) {
+    echo '<script>alert("Wrong ID Number or Password. Please try again"); window.location.href = "login.php";</script>';
+    exit(); // Exit if password is incorrect
+  }
+
+  if ($data['type'] == 1) { // Assuming type 1 represents admin
+    $_SESSION['username'] = $IDnum;
+    $_SESSION['type'] = $data['type'];
+    header("Location: admin.php");
+    exit(); // Exit after redirecting
+  } else {
+    $_SESSION['username'] = $IDnum;
+    $_SESSION['type'] = $data['type'];
+    header("Location: checker.php");
+    exit(); // Exit after redirecting
+  }
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -280,12 +280,12 @@ tr:hover {
     background-color: #d1e7dd;
 }
 
-button {
+/* button {
     background: none;
     border: none;
     font-size: 1.5em;
     cursor: pointer;
-}
+} */
 
 .summary {
     display: grid;
@@ -301,7 +301,7 @@ button {
     background-color: #4CAF50; /* Green background */
     border: none;             /* Remove borders */
     color: white;             /* White text */
-    /* padding: 15px 32px;       Some padding */
+    padding: 15px 32px;       /* Some padding */
     text-align: center;       /* Centered text */
     text-decoration: none;    /* Remove underline */
     display: inline-block;    /* Make the button inline-block */
@@ -332,8 +332,8 @@ button {
 /* CSS FOR SEARCH BAR */
 .search {
     display: flex;
+    justify-content: end;
     align-items: center;
-    justify-content: space-between;
     text-align: center;
   }
   
@@ -344,7 +344,7 @@ button {
     border: none;
     color: #646464;
     padding: 0.7rem 1rem;
-    border-radius: 30px;
+    /* border-radius: 30px; */
     width: 12em;
     transition: all ease-in-out .5s;
     margin-right: -2rem;
@@ -384,3 +384,54 @@ button {
     fill: #b4b4b4;
   }
 
+
+
+
+  /* CSS FOR ACTION BUTTON DELETE AND RE PRINT */
+
+    td.action-btn-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    /* GREEN */
+    form.action-button-green button{
+        margin: 5px;
+        background: none;
+        border: 3px solid green;
+        font-size: 17px;
+        cursor: pointer;
+        /* border-radius: 6px; */
+        transition: 200ms;
+    }
+
+    form.action-button-green button:hover{
+        margin: 5px;
+        background: green;
+        color: white;
+        border: 3px solid green;
+        font-size: 17px;
+        cursor: pointer;
+        /* border-radius: 6px; */
+    }
+
+    /* RED */
+    form.action-button-red button{
+        margin: 5px;
+        background: none;
+        border: 3px solid red;
+        font-size: 17px;
+        cursor: pointer;
+        /* border-radius: 6px; */
+        transition: 200ms;
+    }
+
+    form.action-button-red button:hover{
+        margin: 5px;
+        background: red;
+        color: white;
+        border: 3px solid red;
+        font-size: 17px;
+        cursor: pointer;
+        /* border-radius: 6px; */
+    }

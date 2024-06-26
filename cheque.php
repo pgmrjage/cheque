@@ -86,7 +86,7 @@ if ($result->num_rows > 0) {
             <label for="dvNumber">DV Number:</label>
             <input type="text" id="dvNumberInput" name="dvNumber" required>
         </div>
-        <button type="button"  class="styled-button" onclick="saveFormData(); generateCheque();">Print and Save</button>
+        <button type="button" class="styled-button" onclick="saveFormData(); generateCheque();">Print and Save</button>
     </form>
     <div id="responseMessage" style="display:none;"></div>
 
@@ -153,15 +153,15 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $date->format('m/d/Y') . "</td>";
                 echo "<td>" . $row["dv_number"] . "</td>";
                 echo "<td>" . $row["account_code"] . "</td>";
-                echo "<td>";
-                echo "<form method='post' action='reprint.php' class='styled-button'>
+                echo "<td class='action-btn-container'>";
+                echo "<form method='post' action='reprint.php' class='action-button-green'>
                         <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
                         <button type='submit'>Reprint</button>
-                      </form>";
-                echo "<form method='post' action='delete.php' class='styled-button' style=background-color:red;>
+                        </form>";
+                echo "<form method='post' action='delete.php' class='action-button-red'>
                         <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
                         <button type='submit'>Delete</button>
-                </form>";
+                        </form>";
                 echo "</td>";
                 echo "</tr>";
             }
