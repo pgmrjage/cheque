@@ -47,8 +47,8 @@ if ($result->num_rows > 0) {
         <div class="form-group">
             <label for="accountCode">Account Code</label>
             <select name="accountCode" id="accountCodeInput" onchange="toggleNewAccountInput()">
-                <?php echo $options; ?>
                 <option value = "addNew">Add New Account Number</option>
+                <?php echo $options; ?>
             </select>
         </div>
 
@@ -85,8 +85,9 @@ if ($result->num_rows > 0) {
         <div class="form-group">
             <label for="dvNumber">DV Number:</label>
             <input type="text" id="dvNumberInput" name="dvNumber" required>
+            <p hidden id="lastdvused"></p>
         </div>
-        <button type="button" class="styled-button" onclick="saveFormData(); generateCheque();">Print and Save</button>
+        <button type="button" class="styled-button" onclick="save_and_print()">Print and Save</button>
     </form>
     <div id="responseMessage" style="display:none;"></div>
 

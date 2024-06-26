@@ -1,23 +1,41 @@
 // TOP SCRIPT
 
-        $(document).ready(function(){
-            $('#accountCodeInput').change(function(){
-                var accountCode = $(this).val();
-                if(accountCode) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'fetch_account_number.php',
-                        data: {accountCode: accountCode},
-                        success: function(response){
-                            $('#accountNumberInput').val(response);
-                        }
-                    });
-                } else {
-                    $('#accountNumberInput').val('');
+$(document).ready(function(){
+    $('#accountCodeInput').change(function(){
+        var accountCode = $(this).val();
+        if(accountCode) {
+            $.ajax({
+                type: 'POST',
+                url: 'fetch_account_number.php',
+                data: {accountCode: accountCode},
+                success: function(response){
+                    $('#accountNumberInput').val(response);
                 }
             });
-        });
-    
+        } else {
+            $('#accountNumberInput').val('');
+        }
+    });
+});
+//dv num and cheque num history
+$(document).ready(function() {
+    $('#accountCodeInput').change(function() {
+        var accountCode = $(this).val();
+        if (accountCode) {
+            $.ajax({
+                url: 'get_check_dv_history.php',
+                type: 'POST',
+                data: { accountCode: accountCode },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    $('#checkNumberInput').val(data.checkNumber);
+                    $('#dvNumberInput').val(data.dvNumber); 
+                    $('#lastdvused').text(data.dvNumber);
+                }
+            });
+        }
+    });
+});
 
 
 
@@ -282,7 +300,18 @@ function numberToWords(num) {
     }
 
 
+    function save_and_print(){
+        var dvlastused = document.getElementById("lastdvused").innerText
+        var dvinput = document.getElementById("dvNumberInput").value
 
+        if(dvlastused != dvinput){
+            saveFormData();
+            generateCheque();
+        }
+        else{
+            alert("DV Number is unchanged")
+        }
+    }
 
 
 
