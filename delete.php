@@ -1,14 +1,10 @@
 <?php
+require "database.php"
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $check_number = $_POST['check_number'];
     
     // Database connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
     
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
     
     // Delete the record
     $sql = "DELETE FROM checks WHERE check_number = ?";

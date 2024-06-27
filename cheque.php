@@ -21,10 +21,11 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="cheque_styles.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <title>Cheque Printing System</title>
         
     
@@ -87,7 +88,7 @@ if ($result->num_rows > 0) {
             <input type="text" id="dvNumberInput" name="dvNumber" required>
             <p hidden id="lastdvused"></p>
         </div>
-        <button type="button" class="styled-button" onclick="save_and_print()">Print and Save</button>
+        <button type="submit" class="styled-button" onclick="save_and_print()">Print and Save</button>
     </form>
     <div id="responseMessage" style="display:none;"></div>
 

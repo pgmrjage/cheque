@@ -1,4 +1,36 @@
 // TOP SCRIPT
+//payee start
+$(function() {
+    $("#payeeInput").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "get_payee_names.php",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 2
+    });
+});
+
+$("#chequeForm").submit(function(event) {
+    event.preventDefault();
+    $.ajax({
+        url: "submit_payee.php",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(data) {
+            alert(data);
+        }
+    });
+});
+//payee end
 
 $(document).ready(function(){
     $('#accountCodeInput').change(function(){
