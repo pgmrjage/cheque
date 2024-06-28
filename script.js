@@ -26,7 +26,7 @@ $("#chequeForm").submit(function(event) {
         type: "POST",
         data: $(this).serialize(),
         success: function(data) {
-            alert(data);
+            //alert(data);
         }
     });
 });
@@ -353,12 +353,15 @@ function numberToWords(num) {
     // JS FOR ADDING NEW ACCOUNT NUMBER
     // =============================================
     function toggleNewAccountInput() {
-        var select = document.getElementById("accountCodeInput");
+        var accountCodeSelect = document.getElementById("accountCodeInput");
         var newAccountInputGroup = document.getElementById("newAccountInputGroup");
+        var accountNumberInput = document.getElementById("accountNumberInput");
 
-        if (select.value === "addNew") {
+        if (accountCodeSelect.value === "addNew") {
             newAccountInputGroup.classList.remove("hidden");
+            accountNumberInput.readOnly = false; // Allow editing of the account number when adding a new account
         } else {
             newAccountInputGroup.classList.add("hidden");
+            accountNumberInput.readOnly = true; // Keep the account number read-only for existing accounts
         }
     }
