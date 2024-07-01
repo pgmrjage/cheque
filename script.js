@@ -214,88 +214,130 @@ function numberToWords(num) {
     // JS FOR SUMMARY
     // ===================================
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    let events = {}; // Object to store events, keyed by date string
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let events = {}; // Object to store events, keyed by date string
 
-    function generateCalendar(month, year) {
-        const firstDay = (new Date(year, month)).getDay();
-        const daysInMonth = 32 - new Date(year, month, 32).getDate();
-        const tbl = document.getElementById("calendarBody");
+function generateCalendar(month, year) {
+    const firstDay = (new Date(year, month)).getDay();
+    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+    const tbl = document.getElementById("calendarBody");
 
-        tbl.innerHTML = "";
+    tbl.innerHTML = "";
 
-        let date = 1;
-        for (let i = 0; i < 6; i++) {
-            let row = document.createElement("tr");
+    let date = 1;
+    for (let i = 0; i < 6; i++) {
+        let row = document.createElement("tr");
 
-            for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay) {
-                    let cell = document.createElement("td");
-                    let cellText = document.createTextNode("");
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                } else if (date > daysInMonth) {
-                    break;
-                } else {
-                    let cell = document.createElement("td");
-                    cell.setAttribute('data-date', `${year}-${month + 1}-${date}`);
-                    cell.addEventListener('click', () => addEvent(cell));
-                    let cellText = document.createTextNode(date);
-                    cell.appendChild(cellText);
+        for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+                let cell = document.createElement("td");
+                let cellText = document.createTextNode("");
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            } else if (date > daysInMonth) {
+                break;
+            } else {
+                let cell = document.createElement("td");
+                cell.setAttribute('data-date', `${year}-${month + 1}-${date}`);
+                cell.addEventListener('click', () => addEvent(cell));
+                let cellText = document.createTextNode(date);
+                cell.appendChild(cellText);
 
-                    let eventCount = events[`${year}-${month + 1}-${date}`] || 0;
-                    if (eventCount > 0) {
-                        let eventBadge = document.createElement("span");
-                        eventBadge.className = "event";
-                        eventBadge.textContent = ` (${eventCount})`;
-                        cell.appendChild(eventBadge);
-                    }
-
-                    if (date === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) {
-                        cell.classList.add("today");
-                    }
-                    row.appendChild(cell);
-                    date++;
+                let eventCount = events[`${year}-${month + 1}-${date}`] || 0;
+                if (eventCount > 0) {
+                    let eventBadge = document.createElement("span");
+                    eventBadge.className = "event";
+                    eventBadge.textContent = ` (${eventCount})`;
+                    cell.appendChild(eventBadge);
                 }
+
+                if (date === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) {
+                    cell.classList.add("today");
+                }
+                row.appendChild(cell);
+                date++;
             }
-            tbl.appendChild(row);
+        }
+        tbl.appendChild(row);
+    }
+
+    document.getElementById("monthYear").innerText = `${monthNames[month]} ${year}`;
+    document.getElementById("summaryMonth").innerText = `${monthNames[month]} ${year}`;
+    document.getElementById("summaryYear").innerText = `${year}`;
+    updateSummary(month, year);
+    updateReportTable(year);
+}
+
+function addEvent(cell) {
+    let date = cell.getAttribute('data-date');
+    if (!events[date]) {
+        events[date] = 0;
+    }
+    events[date]++;
+    generateCalendar(currentMonth, currentYear);
+}
+
+function updateSummary(month, year) {
+    let monthlyTotal = 0;
+    let annualTotal = 0;
+
+    for (let date in events) {
+        let [eventYear, eventMonth] = date.split('-').map(Number);
+        if (eventYear === year) {
+            annualTotal += events[date];
+            if (eventMonth === month + 1) {
+                monthlyTotal += events[date];
+            }
+        }
+    }
+
+    document.getElementById("monthlyTotal").innerText = monthlyTotal;
+    document.getElementById("annualTotal").innerText = annualTotal;
+}
+
+function updateReportTable(year) {
+    const reportBody = document.getElementById("reportBody");
+    reportBody.innerHTML = "";
+
+    for (let month = 0; month < 12; month++) {
+        let monthlyTotal = 0;
+        for (let date in events) {
+            let [eventYear, eventMonth] = date.split('-').map(Number);
+            if (eventYear === year && eventMonth === month + 1) {
+                monthlyTotal += events[date];
+            }
         }
 
-        document.getElementById("monthYear").innerText = `${monthNames[month]} ${year}`;
-        document.getElementById("summaryMonth").innerText = `${monthNames[month]} ${year}`;
-        updateSummary();
-    }
+        let row = document.createElement("tr");
+        let cellMonth = document.createElement("td");
+        let cellTotal = document.createElement("td");
+        cellMonth.textContent = monthNames[month];
+        cellTotal.textContent = monthlyTotal;
 
-    function addEvent(cell) {
-        let date = cell.getAttribute('data-date');
-        if (!events[date]) {
-            events[date] = 0;
-        }
-        events[date]++;
-        generateCalendar(currentMonth, currentYear);
+        row.appendChild(cellMonth);
+        row.appendChild(cellTotal);
+        reportBody.appendChild(row);
     }
+}
 
-    function updateSummary() {
-        let totalEvents = Object.values(events).reduce((sum, val) => sum + val, 0);
-        document.getElementById("totalEvents").innerText = totalEvents;
-    }
+function prevMonth() {
+    currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+    currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear;
+    generateCalendar(currentMonth, currentYear);
+}
 
-    function prevMonth() {
-        currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-        currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear;
-        generateCalendar(currentMonth, currentYear);
-    }
+function nextMonth() {
+    currentMonth = (currentMonth === 11) ? 0 : currentMonth + 1;
+    currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear;
+    generateCalendar(currentMonth, currentYear);
+}
 
-    function nextMonth() {
-        currentMonth = (currentMonth === 11) ? 0 : currentMonth + 1;
-        currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear;
-        generateCalendar(currentMonth, currentYear);
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    generateCalendar(currentMonth, currentYear);
+});
 
-    document.addEventListener('DOMContentLoaded', function () {
-        generateCalendar(currentMonth, currentYear);
-    });
+
 
 
     // ajax for saving form

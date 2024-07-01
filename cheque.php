@@ -213,13 +213,30 @@ if ($result->num_rows > 0) {
         </table>
         <div class="summary">
             <h3>Summary for <span id="summaryMonth"></span></h3>
-            <p>Total: <span id="#">0</span></p>
-        </div>
-    </div>
-        
-    
+            <p>Monthly Total: <span id="monthlyTotal">0</span></p>
+            <h3>Annual Summary for <span id="summaryYear"></span></h3>
+            <p>Total: <span id="annualTotal">0</span></p>
+        </div>  
 
     </div>
+        
+    <div class="report">
+            <h3>Monthly Report</h3>
+            <table id="reportTable">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="reportBody">
+                    <!-- Report body will be dynamically generated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <button onclick="printReport()">Print Report</button>
 </div>
 
 <script src="script.js"></script>
