@@ -214,69 +214,88 @@ function numberToWords(num) {
     // JS FOR SUMMARY
     // ===================================
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
-let events = {}; // Object to store events, keyed by date string
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    let events = {}; // Object to store events, keyed by date string
 
-function generateCalendar(month, year) {
-    const firstDay = (new Date(year, month)).getDay();
-    const daysInMonth = 32 - new Date(year, month, 32).getDate();
-    const tbl = document.getElementById("calendarBody");
-
-    tbl.innerHTML = "";
-
-    let date = 1;
-    for (let i = 0; i < 6; i++) {
-        let row = document.createElement("tr");
-
-        for (let j = 0; j < 7; j++) {
-            if (i === 0 && j < firstDay) {
-                let cell = document.createElement("td");
-                let cellText = document.createTextNode("");
-                cell.appendChild(cellText);
-                row.appendChild(cell);
-            } else if (date > daysInMonth) {
-                break;
-            } else {
-                let cell = document.createElement("td");
-                cell.setAttribute('data-date', `${year}-${month + 1}-${date}`);
-                cell.addEventListener('click', () => addEvent(cell));
-                let cellText = document.createTextNode(date);
-                cell.appendChild(cellText);
-
-                let eventCount = events[`${year}-${month + 1}-${date}`] || 0;
-                if (eventCount > 0) {
-                    let eventBadge = document.createElement("span");
-                    eventBadge.className = "event";
-                    eventBadge.textContent = ` (${eventCount})`;
-                    cell.appendChild(eventBadge);
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchEvents();
+    });
+    
+    function fetchEvents() {
+        fetch('getEvents.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error fetching events:', data.error);
+                    return;
                 }
-
-                if (date === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) {
-                    cell.classList.add("today");
+                events = {};
+                for (let key in data) {
+                    let date = key.split(' ')[0]; // Get the date part only
+                    events[date] = data[key];
                 }
-                row.appendChild(cell);
-                date++;
+                console.log(events);
+                generateCalendar(currentMonth, currentYear);
+            })
+            .catch(error => console.error('Fetch error:', error));
+            
+    }
+    
+    function generateCalendar(month, year) {
+        const firstDay = (new Date(year, month)).getDay();
+        const daysInMonth = 32 - new Date(year, month, 32).getDate();
+        const tbl = document.getElementById("calendarBody");
+    
+        tbl.innerHTML = "";
+    
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+            let row = document.createElement("tr");
+    
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay) {
+                    let cell = document.createElement("td");
+                    let cellText = document.createTextNode("");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                } else if (date > daysInMonth) {
+                    break;
+                } else {
+                    let cell = document.createElement("td");
+                // Ensure date format matches YYYY-MM-DD
+                    let formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+                    cell.setAttribute('data-date', formattedDate);
+                    //cell.addEventListener('click', () => addEvent(cell));
+                    let cellText = document.createTextNode(date);
+                    cell.appendChild(cellText);
+    
+                    let eventCount = events[formattedDate];
+                    if (eventCount > 0) {
+                        let eventBadge = document.createElement("span");
+                        eventBadge.className = "event";
+                        eventBadge.textContent = ` (${eventCount})`;
+                        cell.appendChild(eventBadge);
+                    }
+    
+                    if (date === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) {
+                        cell.classList.add("today");
+                    }
+                    row.appendChild(cell);
+                    date++;
+                }
             }
+            tbl.appendChild(row);
         }
-        tbl.appendChild(row);
+    
+        document.getElementById("monthYear").innerText = `${monthNames[month]} ${year}`;
+        document.getElementById("summaryMonth").innerText = `${monthNames[month]} ${year}`;
+        document.getElementById("summaryYear").innerText = `${year}`;
+        updateSummary(month, year);
+        updateReportTable(year);
     }
 
-    document.getElementById("monthYear").innerText = `${monthNames[month]} ${year}`;
-    document.getElementById("summaryMonth").innerText = `${monthNames[month]} ${year}`;
-    document.getElementById("summaryYear").innerText = `${year}`;
-    updateSummary(month, year);
-    updateReportTable(year);
-}
-
-function addEvent(cell) {
-    let date = cell.getAttribute('data-date');
-    if (!events[date]) {
-        events[date] = 0;
-    }
-    events[date]++;
-    generateCalendar(currentMonth, currentYear);
-}
+ 
 
 function updateSummary(month, year) {
     let monthlyTotal = 0;
@@ -407,3 +426,4 @@ document.addEventListener('DOMContentLoaded', function () {
             accountNumberInput.readOnly = true; // Keep the account number read-only for existing accounts
         }
     }
+    
