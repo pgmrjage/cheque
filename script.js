@@ -426,4 +426,55 @@ document.addEventListener('DOMContentLoaded', function () {
             accountNumberInput.readOnly = true; // Keep the account number read-only for existing accounts
         }
     }
+
+
+
+
+
+    // JS FOR SEARCH BOX
+    // =============================================
+    // =============================================
+    function searching(){
+        // Declare variables
+        var input, filter, table, tr,td, i, txtValue;
+        input = document.getElementById("searchvalue");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i=1; i<tr.length; i++){
+            td = tr[i].getElementsByTagName("td");
+            tr[i].style.display = "none";
+            for (j=0; j<td.length; j++)
+                {
+                    if (td[j]){
+                        txtValue = td[j].textContent || td[j].innerText
+                        if (txtValue.toUpperCase().indexOf(filter) > -1){
+                            tr[i].style.display = "";  
+                            break;
+                        }
+                    }
+                }
+        }
+
+    }
     
+
+
+
+
+    // JS FOR SUMMARY PRINT REPORT
+    function printReport(){
+        window.print();
+    }
+
+
+
+
+    // JS FOR SET CURRENT OR DEFAULT DATE
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dateInput = document.getElementById('chequeDateInput');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+    });

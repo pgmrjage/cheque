@@ -111,7 +111,7 @@ if ($result->num_rows > 0) {
     <div class="history_container">
         <h2>Logs</h2>
         <div class="search">
-            <input type="text" class="searchinput" placeholder="Type your text">
+            <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()">
             <button class="searchbutton">
                 <svg class="searchicon" aria-hidden="true" viewBox="0 0 24 24">
                     <g>
@@ -129,7 +129,7 @@ if ($result->num_rows > 0) {
         $result = $conn->query($sql);
         ?>
 
-        <table>
+        <table id="dataTable">
         <thead>
             <tr>
                 
