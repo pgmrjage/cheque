@@ -100,6 +100,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 12px;
 }
 #dvNumber {
     top: 220px;
@@ -110,7 +111,7 @@ body {
     left: 200px;
 }
 
-@media print {
+/* @media print {
     body * {
         visibility: hidden;
     }
@@ -125,7 +126,7 @@ body {
         width: 100%;
         height: auto;
     }
-}
+} 
 
 
 /* CSS FOR TABS (Print, Logs, Summary) */

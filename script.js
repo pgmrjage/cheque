@@ -170,8 +170,19 @@ function numberToWords(num) {
 
 
     function generateCheque() {
+        var printContent = document.getElementById("cheque").innerHTML;
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = printContent;
         
+        var style = document.createElement('style');
+        style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; }';
+        document.head.appendChild(style);
+
         window.print();
+        
+        
+        document.body.innerHTML = originalContent;
+        document.head.removeChild(style);
     }
     document.getElementById('accountNumberInput').addEventListener('input', updateCheque);
     document.getElementById('checkNumberInput').addEventListener('input', updateCheque);
@@ -466,7 +477,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // JS FOR SUMMARY PRINT REPORT
     function printReport(){
+        var printContent = document.getElementById("report").innerHTML;
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = printContent;
+
+        var style = document.createElement('style');
+        style.innerHTML = '@page { size: portrait; }';
+        document.head.appendChild(style);
+
         window.print();
+        
+        
+        document.body.innerHTML = originalContent;
+        document.head.removeChild(style);
     }
 
 

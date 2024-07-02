@@ -220,7 +220,7 @@ if ($result->num_rows > 0) {
 
     </div>
         
-    <div class="report">
+    <div id="report">
             <h3>Monthly Report</h3>
             <table id="reportTable">
                 <thead>
