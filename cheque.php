@@ -144,35 +144,33 @@ if ($result->num_rows > 0) {
         </thead>
         <tbody>
         <?php
-        if ($result->num_rows > 0) {
-            // Output data of each row
-            while($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["check_number"] . "</td>";
-                echo "<td>" . $row["payee"] . "</td>";
-                echo "<td>" . $row["amount"] . "</td>";
-                $date = new DateTime($row["date"]);
-                echo "<td>" . $date->format('m/d/Y') . "</td>";
-                echo "<td>" . $row["dv_number"] . "</td>";
-                echo "<td>" . $row["account_code"] . "</td>";
-                echo "<td class='action-btn-container'>";
-                echo "<form method='post' action='reprint.php' class='action-button-green'>
-                        <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
-                        <button type='submit'>Reprint</button>
-                        </form>";
-                echo "<form method='post' action='delete.php' class='action-button-red'>
-                        <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
-                        <button type='submit'>Delete</button>
-                        </form>";
-                echo "</td>";
-                echo "</tr>";
+            if ($result->num_rows > 0) {
+                // Output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr id='record-" . $row["check_id"] . "'>";
+                    echo "<td>" . $row["check_number"] . "</td>";
+                    echo "<td>" . $row["payee"] . "</td>";
+                    echo "<td>" . $row["amount"] . "</td>";
+                    $date = new DateTime($row["date"]);
+                    echo "<td>" . $date->format('m/d/Y') . "</td>";
+                    echo "<td>" . $row["dv_number"] . "</td>";
+                    echo "<td>" . $row["account_code"] . "</td>";
+                    echo "<td class='action-btn-container'>";
+                    echo "<form method='post' action='reprint.php' class='action-button-green'>
+                            <input type='hidden' name='check_number' value='" . $row["check_id"] . "'>
+                            <button type='submit'>Reprint</button>
+                            </form>";
+                    echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7'>No records found</td></tr>";
             }
-        } else {
-            echo "<tr><td colspan='7'>No records found</td></tr>";
-        }
-        // Close the database connection
-        $conn->close();
-        ?>
+            // Close the database connection
+            $conn->close();
+            ?>
+
             
             
         </tbody>
