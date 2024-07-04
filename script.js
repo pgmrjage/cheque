@@ -419,9 +419,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
-
     // JS FOR ADDING NEW ACCOUNT NUMBER
     // =============================================
     function toggleNewAccountInput() {
@@ -501,3 +498,32 @@ document.addEventListener('DOMContentLoaded', function () {
         const today = new Date().toISOString().split('T')[0];
         dateInput.value = today;
     });
+
+
+
+
+
+    // JS FOR PRINT AGAIN BUTTON IN HISTORY TAB
+    function printchequeHistory(checkNumber) {
+        $.ajax({
+            url: 'reprint.php',
+            type: 'POST',
+            data: { check_number: checkNumber },
+            success: function(response) {
+                var chequeData = JSON.parse(response);
+
+                document.getElementById('accountNumber').innerText = chequeData.account_code;
+                document.getElementById('payee').innerText = chequeData.payee;
+                document.getElementById('amount').innerText = chequeData.amount;
+                document.getElementById('amountWords').innerText = chequeData.amount_words; // Assuming you have the amount in words
+                document.getElementById('chequeDate').innerText = chequeData.date;
+                document.getElementById('dvNumber').innerText = chequeData.dv_number;
+                document.getElementById('checkNumber').innerText = chequeData.check_number;
+
+                
+            }
+        });
+        generateCheque();
+        
+    }
+

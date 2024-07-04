@@ -156,10 +156,11 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $row["dv_number"] . "</td>";
                 echo "<td>" . $row["account_code"] . "</td>";
                 echo "<td class='action-btn-container'>";
-                echo "<form method='post' action='reprint.php' class='action-button-green'>
-                        <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
-                        <button type='submit'>Reprint</button>
-                        </form>";
+                // echo "<form method='post' class='action-button-green' id='reprintForm'>
+                //         <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
+                //         <button type='submit' onclick='printchequeHistory()'>Reprint</button>
+                //         </form>";
+                echo "<button type='submit' onclick='printchequeHistory()'>Reprint</button>";       // REPRINT
                 echo "<form method='post' action='delete.php' class='action-button-red'>
                         <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
                         <button type='submit'>Delete</button>
@@ -173,10 +174,12 @@ if ($result->num_rows > 0) {
         // Close the database connection
         $conn->close();
         ?>
-            
+        
             
         </tbody>
     </table>
+
+    
 
     </div>
 </div>
@@ -229,9 +232,16 @@ if ($result->num_rows > 0) {
                         <th>Total</th>
                     </tr>
                 </thead>
+                
                 <tbody id="reportBody">
                     <!-- Report body will be dynamically generated -->
                 </tbody>
+
+                <thead>
+                    <tr>
+                        
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
