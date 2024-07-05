@@ -182,10 +182,7 @@ if ($result->num_rows > 0) {
                 echo "<button class='action-button-red' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
                 
 
-                echo "<form method='post' action='delete.php' class='action-button-red'>
-                        <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
-                        <button type='submit'>Delete</button>
-                        </form>";
+                echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
                 echo "</td>";
                 echo "</tr>";
             }

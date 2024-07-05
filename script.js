@@ -75,22 +75,35 @@ $(document).ready(function() {
 
 
 function openTab(evt, tabName) {
-  // Get all elements with class="tab-content" and hide them
-  var tabContents = document.getElementsByClassName("tab-content");
-  for (var i = 0; i < tabContents.length; i++) {
-    tabContents[i].style.display = "none";
-  }
+    // Get all elements with class="tab-content" and hide them
+    var tabContents = document.getElementsByClassName("tab-content");
+    for (var i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+    }
 
-  // Get all elements with class="tab" and remove the class "active"
-  var tabs = document.getElementsByClassName("tab");
-  for (var i = 0; i < tabs.length; i++) {
-    tabs[i].className = tabs[i].className.replace(" active", "");
-  }
+    // Get all elements with class="tab" and remove the class "active"
+    var tabs = document.getElementsByClassName("tab");
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].className = tabs[i].className.replace(" active", "");
+    }
 
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.className += " active";
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+
+    // Store the active tab in local storage
+    localStorage.setItem("activeTab", tabName);
 }
+// Show the default tab
+document.addEventListener("DOMContentLoaded", function() {
+    var defaultTab = localStorage.getItem("activeTab") || "tab2"; // Default to 'History' tab if none is set
+    var defaultTabButton = document.querySelector(".tab[onclick=\"openTab(event, '" + defaultTab + "')\"]");
+
+    if (defaultTabButton) {
+        defaultTabButton.click();
+    }
+});
+
 
 
 
@@ -542,3 +555,26 @@ document.addEventListener('DOMContentLoaded', function () {
             document.head.removeChild(style);
     }
 
+    //deleting a record
+    function deleteRecord(checkNumber) {
+        if (confirm('Are you sure you want to delete this record?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete_record.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    //alert(xhr.responseText);
+                    // Remove the deleted record from the list
+                    var recordElement = document.getElementById('record-' + checkNumber);
+                    if (recordElement) {
+                        recordElement.remove();
+                    }
+                } else {
+                    alert('An error occurred while deleting the record.');
+                }
+            };
+    
+            xhr.send('check_number=' + checkNumber);
+        }
+    }
