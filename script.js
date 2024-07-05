@@ -578,3 +578,58 @@ document.addEventListener('DOMContentLoaded', function () {
             xhr.send('check_number=' + checkNumber);
         }
     }
+
+    //amount to words for reprint
+    function numberToWords(amount) {
+        const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+    
+        // Function to convert a number less than 1000 to words
+        function convertLessThanOneThousand(num) {
+            let words = '';
+            if (num >= 100) {
+                words += ones[Math.floor(num / 100)] + ' hundred ';
+                num %= 100;
+            }
+            if (num >= 20) {
+                words += tens[Math.floor(num / 10)] + ' ';
+                num %= 10;
+            }
+            if (num >= 10) {
+                words += teens[num - 10] + ' ';
+                num = 0;
+            }
+            if (num > 0) {
+                words += ones[num] + ' ';
+            }
+            return words.trim();
+        }
+    
+        // Function to convert the decimal part (cents) to words
+        function convertCents(cents) {
+            if (cents === 0) {
+                return 'zero cents';
+            } else if (cents === 1) {
+                return 'one cent';
+            } else {
+                return convertLessThanOneThousand(cents) + ' cents';
+            }
+        }
+    
+        // Split amount into integer and decimal parts
+        let integerPart = Math.floor(amount);
+        let decimalPart = Math.round((amount - integerPart) * 100);
+    
+        // Convert integer part to words
+        let words = convertLessThanOneThousand(integerPart) + ' pesos';
+    
+        // Convert decimal part to words
+        if (decimalPart > 0) {
+            words += ' and ' + convertCents(decimalPart);
+        }
+    
+        return words;
+    }
+    
+    

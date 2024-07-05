@@ -151,7 +151,7 @@ if ($result->num_rows > 0) {
         </thead>
         <tbody>
         <?php
-        
+        require_once('reprint.php');
 
         if ($result->num_rows > 0) {
             // Output data of each row
@@ -161,17 +161,21 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $row["payee"] . "</td>";
                 echo "<td>" . $row["amount"] . "</td>";
                 $date = new DateTime($row["date"]);
-                echo "<td>" . $date->format('m d Y') . "</td>";
+                echo "<td>" . $date->format('m/d/Y') . "</td>";
                 echo "<td>" . $row["dv_number"] . "</td>";
                 echo "<td>" . $row["account_code"] . "</td>";
                 echo "<td class='action-btn-container'>";
 
+                
                 echo '<div hidden id="cheque">';
                     echo '<div id=' . $row["check_id"] . '>';
                         echo '<div class="cheque-field" id="accountNumber">' . $row["account_number"] . '</div>';
                         echo '<div class="cheque-field" id="payee">'. $row["payee"] . '</div>';
                         echo '<div class="cheque-field" id="amount">' . number_format($row["amount"], 2) . '</div>';
-                        echo '<div class="cheque-field" id="amountWords"></div>';
+                        echo '<div class="cheque-field" id="amountWords">';
+                        //amount to words
+                        echo amountToWords($row["amount"]);
+                        echo '</div>';
                         echo '<div class="cheque-field" id="chequeDate">' . $date->format('m d Y') . '</div>';
                         echo '<div class="cheque-field" id="dvNumber">' . $row["dv_number"] . '</div>';
                         echo '<div class="cheque-field" id="checkNumber">' . $row["check_number"] . '</div>';
@@ -180,7 +184,6 @@ if ($result->num_rows > 0) {
 
                 // REPRINT
                 echo "<button class='action-button-red' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
-                
 
                 echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
                 echo "</td>";
