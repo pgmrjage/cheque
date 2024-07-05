@@ -504,26 +504,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // JS FOR PRINT AGAIN BUTTON IN HISTORY TAB
-    function printchequeHistory(checkNumber) {
-        $.ajax({
-            url: 'reprint.php',
-            type: 'POST',
-            data: { check_number: checkNumber },
-            success: function(response) {
-                var chequeData = JSON.parse(response);
+    //function printchequeHistory(checkNumber) {
+        // $.ajax({
+        //     url: 'reprint.php',
+        //     type: 'POST',
+        //     data: { check_number: checkNumber },
+        //     success: function(response) {
+        //         var chequeData = JSON.parse(response);
 
-                document.getElementById('accountNumber').innerText = chequeData.account_code;
-                document.getElementById('payee').innerText = chequeData.payee;
-                document.getElementById('amount').innerText = chequeData.amount;
-                document.getElementById('amountWords').innerText = chequeData.amount_words; // Assuming you have the amount in words
-                document.getElementById('chequeDate').innerText = chequeData.date;
-                document.getElementById('dvNumber').innerText = chequeData.dv_number;
-                document.getElementById('checkNumber').innerText = chequeData.check_number;
+        //         document.getElementById('accountNumber').innerText = chequeData.account_code;
+        //         document.getElementById('payee').innerText = chequeData.payee;
+        //         document.getElementById('amount').innerText = chequeData.amount;
+        //         document.getElementById('amountWords').innerText = chequeData.amount_words; // Assuming you have the amount in words
+        //         document.getElementById('chequeDate').innerText = chequeData.date;
+        //         document.getElementById('dvNumber').innerText = chequeData.dv_number;
+        //         document.getElementById('checkNumber').innerText = chequeData.check_number;
 
                 
-            }
-        });
-        generateCheque();
-        
+        //     }
+        // });
+        // generateCheque();
+
+        function printchequeHistory(chequeNum) {
+            var content = document.getElementById(chequeNum);
+            var printContent = content.innerHTML;
+            var originalContent = document.body.innerHTML;
+            document.body.innerHTML = printContent;
+            
+            var style = document.createElement('style');
+            style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; }';
+            document.head.appendChild(style);
+    
+            window.print();
+            
+            
+            document.body.innerHTML = originalContent;
+            document.head.removeChild(style);
     }
 

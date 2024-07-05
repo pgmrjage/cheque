@@ -121,11 +121,18 @@ if ($result->num_rows > 0) {
             </button>
         </div>
 
+
         <?php
         require "database.php";     
         // Include the database connection
         // Fetch data from the database
-        $sql = "SELECT check_id, check_number, payee, amount, date, dv_number, account_code FROM tbcheckrecords";
+        $sql = "
+        
+        SELECT cr.check_id, cr.check_number, cr.payee, cr.amount, cr.date, cr.dv_number, ba.account_code, ba.account_number 
+        FROM tbcheckrecords cr, tbbankaccount ba
+        WHERE cr.account_code = ba.account_code
+        
+        ";
         $result = $conn->query($sql);
         ?>
 
@@ -144,23 +151,37 @@ if ($result->num_rows > 0) {
         </thead>
         <tbody>
         <?php
+        
+
         if ($result->num_rows > 0) {
             // Output data of each row
             while($row = $result->fetch_assoc()) {
-                echo "<tr>";
+                echo "<tr id='record-" . $row["check_id"] . "'>";
                 echo "<td>" . $row["check_number"] . "</td>";
                 echo "<td>" . $row["payee"] . "</td>";
                 echo "<td>" . $row["amount"] . "</td>";
                 $date = new DateTime($row["date"]);
-                echo "<td>" . $date->format('m/d/Y') . "</td>";
+                echo "<td>" . $date->format('m d Y') . "</td>";
                 echo "<td>" . $row["dv_number"] . "</td>";
                 echo "<td>" . $row["account_code"] . "</td>";
                 echo "<td class='action-btn-container'>";
-                // echo "<form method='post' class='action-button-green' id='reprintForm'>
-                //         <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
-                //         <button type='submit' onclick='printchequeHistory()'>Reprint</button>
-                //         </form>";
-                echo "<button type='submit' onclick='printchequeHistory()'>Reprint</button>";       // REPRINT
+
+                echo '<div hidden id="cheque">';
+                    echo '<div id=' . $row["check_id"] . '>';
+                        echo '<div class="cheque-field" id="accountNumber">' . $row["account_number"] . '</div>';
+                        echo '<div class="cheque-field" id="payee">'. $row["payee"] . '</div>';
+                        echo '<div class="cheque-field" id="amount">' . number_format($row["amount"], 2) . '</div>';
+                        echo '<div class="cheque-field" id="amountWords"></div>';
+                        echo '<div class="cheque-field" id="chequeDate">' . $date->format('m d Y') . '</div>';
+                        echo '<div class="cheque-field" id="dvNumber">' . $row["dv_number"] . '</div>';
+                        echo '<div class="cheque-field" id="checkNumber">' . $row["check_number"] . '</div>';
+                    echo '</div>';
+                echo '</div>';
+
+                // REPRINT
+                echo "<button class='action-button-red' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
+                
+
                 echo "<form method='post' action='delete.php' class='action-button-red'>
                         <input type='hidden' name='check_number' value='" . $row["check_number"] . "'>
                         <button type='submit'>Delete</button>
@@ -178,8 +199,6 @@ if ($result->num_rows > 0) {
             
         </tbody>
     </table>
-
-    
 
     </div>
 </div>
