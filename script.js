@@ -442,6 +442,12 @@ document.addEventListener('DOMContentLoaded', function () {
     //     dateInput.value = today;
     // });
 
+        function setCurrentDate() {
+        const dateInput = document.getElementById('chequeDateInput');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+    }
+
 
 
 
@@ -586,6 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
                     updateAmountInWords();
                     updateCheque();
+                    setCurrentDate();
                 } else {
                     alert('No details found for this DV number');
                 }
