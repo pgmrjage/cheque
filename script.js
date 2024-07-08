@@ -1,23 +1,6 @@
 // TOP SCRIPT
 //payee start
-$(function() {
-    $("#payeeInput").autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "get_payee_names.php",
-                type: "GET",
-                dataType: "json",
-                data: {
-                    term: request.term
-                },
-                success: function(data) {
-                    response(data);
-                }
-            });
-        },
-        minLength: 2
-    });
-});
+
 
 $("#chequeForm").submit(function(event) {
     event.preventDefault();
@@ -32,42 +15,9 @@ $("#chequeForm").submit(function(event) {
 });
 //payee end
 
-$(document).ready(function(){
-    $('#accountCodeInput').change(function(){
-        var accountCode = $(this).val();
-        if(accountCode) {
-            $.ajax({
-                type: 'POST',
-                url: 'fetch_account_number.php',
-                data: {accountCode: accountCode},
-                success: function(response){
-                    $('#accountNumberInput').val(response);
-                }
-            });
-        } else {
-            $('#accountNumberInput').val('');
-        }
-    });
-});
+
 //dv num and cheque num history
-$(document).ready(function() {
-    $('#accountCodeInput').change(function() {
-        var accountCode = $(this).val();
-        if (accountCode) {
-            $.ajax({
-                url: 'get_check_dv_history.php',
-                type: 'POST',
-                data: { accountCode: accountCode },
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    $('#checkNumberInput').val(data.checkNumber);
-                    $('#dvNumberInput').val(data.dvNumber); 
-                    $('#lastdvused').text(data.dvNumber);
-                }
-            });
-        }
-    });
-});
+
 
 
 
@@ -426,19 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // JS FOR ADDING NEW ACCOUNT NUMBER
     // =============================================
-    function toggleNewAccountInput() {
-        var accountCodeSelect = document.getElementById("accountCodeInput");
-        var newAccountInputGroup = document.getElementById("newAccountInputGroup");
-        var accountNumberInput = document.getElementById("accountNumberInput");
 
-        if (accountCodeSelect.value === "addNew") {
-            newAccountInputGroup.classList.remove("hidden");
-            accountNumberInput.readOnly = false; // Allow editing of the account number when adding a new account
-        } else {
-            newAccountInputGroup.classList.add("hidden");
-            accountNumberInput.readOnly = true; // Keep the account number read-only for existing accounts
-        }
-    }
 
 
 
@@ -647,6 +585,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
                     document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
                     updateAmountInWords();
+                    updateCheque();
                 } else {
                     alert('No details found for this DV number');
                 }

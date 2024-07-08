@@ -120,9 +120,9 @@ if ($result->num_rows > 0) {
         // Fetch data from the database
         $sql = "
         
-        SELECT cr.check_id, cr.check_number, cr.payee, cr.amount, cr.date, cr.dv_number, ba.account_code, ba.account_number 
-        FROM tbcheckrecords cr, tbbankaccount ba
-        WHERE cr.account_code = ba.account_code
+        SELECT check_id, check_number, payee, amount, date, dv_number, account_number
+        FROM tbcheckrecords
+        
         
         ";
         $result = $conn->query($sql);
