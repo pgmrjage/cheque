@@ -45,51 +45,43 @@ if ($result->num_rows > 0) {
     <h2>Cheque Printing System</h2>
 
     <form id="chequeForm">
-        <div class="form-group">
-            <label for="accountCode">Account Code</label>
-            <select name="accountCode" id="accountCodeInput" onchange="toggleNewAccountInput()">
-                <option value = "addNew">Add New Account Number</option>
-                <?php echo $options; ?>
-            </select>
-        </div>
-
-        <!-- HIDDEN INPUT BOX -->
-        <div class="form-group hidden" id="newAccountInputGroup">
-            <label for="newAccountCode">New Account Code</label>
-            <input type="text" id="newAccountCode" name="newAccountCode">
-        </div>
-        
-        <div class="form-group">
-            <label for="accountNumber">Account Number:</label>
-            <input type="text" id="accountNumberInput" name="accountNumber" required readonly>
-        </div>
-        <div class="form-group">
-            <label for="checkNumber">Check Number:</label>
-            <input type="text" id="checkNumberInput" name="checkNumber" required>
-        </div>
-        <div class="form-group">
-            <label for="payee">Payee:</label>
-            <input type="text" id="payeeInput" name="payee" required>
-        </div>
-        <div class="form-group">
-            <label for="amount">Amount:</label>
-            <input type="number" id="amountInput" name="amount" step="0.01" oninput="updateAmountInWords()" required>
-        </div>
-        <div class="form-group">
-            <label for="amountWords">Amount (in words):</label>
-            <input type="text" id="amountWordsInput" name="amountWords" readonly required>
-        </div>
-        <div class="form-group">
-            <label for="chequeDate">Date:</label>
-            <input type="date" id="chequeDateInput" name="chequeDate" required>
-        </div>
-        <div class="form-group">
-            <label for="dvNumber">DV Number:</label>
-            <input type="text" id="dvNumberInput" name="dvNumber" required>
-            <p hidden id="lastdvused"></p>
-        </div>
-        <button type="submit" class="styled-button" onclick="save_and_print()">Print and Save</button>
+    <div class="form-group">
+        <label for="dvNumber">DV Number:</label>
+        <input type="text" id="dvNumberInput" name="dvNumber" required>
+    </div>  
+    <div class="form-group hidden" id="newAccountInputGroup">
+        <label for="newAccountCode">New Account Code:</label>
+        <input type="text" id="newAccountCode" name="newAccountCode">
+    </div>
+    <div class="form-group">
+        <label for="accountNumber">Account Number:</label>
+        <input type="text" id="accountNumberInput" name="accountNumber" required readonly>
+    </div>
+    <div class="form-group">
+        <label for="checkNumber">Check Number:</label>
+        <input type="text" id="checkNumberInput" name="checkNumber" required>
+    </div>
+    <div class="form-group">
+        <label for="payee">Payee:</label>
+        <input type="text" id="payeeInput" name="payee" required>
+    </div>
+    <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amountInput" name="amount" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="amountWords">Amount (in words):</label>
+        <input type="text" id="amountWordsInput" name="amountWords" readonly required>
+    </div>
+    <div class="form-group">
+        <label for="chequeDate">Date:</label>
+        <input type="date" id="chequeDateInput" name="chequeDate" required>
+    </div>
+    <button type="submit" class="styled-button" onclick="save_and_print()">Print and Save</button>
     </form>
+
+
+
     <div id="responseMessage" style="display:none;"></div>
 
     <div id="cheque">
@@ -145,7 +137,7 @@ if ($result->num_rows > 0) {
                 <th>Amount</th>
                 <th>Date</th>
                 <th>DV Number</th>
-                <th>Account Code</th>
+                <th>Account Number</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -163,7 +155,7 @@ if ($result->num_rows > 0) {
                 $date = new DateTime($row["date"]);
                 echo "<td>" . $date->format('m/d/Y') . "</td>";
                 echo "<td>" . $row["dv_number"] . "</td>";
-                echo "<td>" . $row["account_code"] . "</td>";
+                echo "<td>" . $row["account_number"] . "</td>";
                 echo "<td class='action-btn-container'>";
 
                 

@@ -417,17 +417,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function save_and_print(){
-        var dvlastused = document.getElementById("lastdvused").innerText
-        var dvinput = document.getElementById("dvNumberInput").value
-
-        if(dvlastused != dvinput){
-            saveFormData();
-            generateCheque();
-        }
-        else{
-            alert("DV Number is unchanged")
-        }
+    function save_and_print(){  
+        saveFormData();
+        generateCheque();  
     }
 
 
@@ -506,11 +498,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // JS FOR SET CURRENT OR DEFAULT DATE
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const dateInput = document.getElementById('chequeDateInput');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-    });
+    // document.addEventListener('DOMContentLoaded', (event) => {
+    //     const dateInput = document.getElementById('chequeDateInput');
+    //     const today = new Date().toISOString().split('T')[0];
+    //     dateInput.value = today;
+    // });
 
 
 
@@ -630,6 +622,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     
         return words;
+    }
+
+
+    //hail hydra database retrieval
+    document.getElementById('dvNumberInput').addEventListener('blur', function() {
+        var dvNumber = this.value;
+        if (dvNumber) {
+            fetchDetails(dvNumber);
+        }
+    });
+    
+    function fetchDetails(dvNumber) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetchDetails.php?dvNumber=' + dvNumber, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    
+                    document.getElementById('accountNumberInput').value = response.data.AA_NO;
+                    document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
+                    document.getElementById('payeeInput').value = response.data.PAYEE;
+                    document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
+                    document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
+                    updateAmountInWords();
+                } else {
+                    alert('No details found for this DV number');
+                }
+            }
+        };
+        xhr.send();
     }
     
     
