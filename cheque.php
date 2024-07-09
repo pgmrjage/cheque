@@ -55,7 +55,7 @@ if ($result->num_rows > 0) {
     </div>
     <div class="form-group">
         <label for="accountNumber">Account Number:</label>
-        <input type="text" id="accountNumberInput" name="accountNumber" required readonly>
+        <input type="text" id="accountNumberInput" name="accountNumber" required>
     </div>
     <div class="form-group">
         <label for="checkNumber">Check Number:</label>
