@@ -1,58 +1,3 @@
-<?php
-session_start();    // start session at the beginning
-
-$server = "";
-$username = "root";
-$password = "";
-$database = "";
-$conn = new mysqli($server, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
-  
-  if (isset($_POST[""])) {
-    if () {
-      echo "Both fields are required";
-      exit(); // Exit after displaying error
-    }
-
-    // No need to sanitize IDnum as it's an integer
-
-  $sql = "SELECT IDnum, password, type FROM users WHERE IDnum = ?";
-  $stmt = $conn->prepare($sql);
-  $stmt->bind_param("i", $IDnum); // Assuming IDnum is an integer
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $data = $result->fetch_assoc();
-
-  if ($data == NULL) {
-    echo '<script>alert("No data found"); window.location.href = "login.php";</script>';
-    exit(); // Exit if no data found
-  }
-
-  // Directly compare the password from the database with the entered password
-  if ($password != $data["password"]) {
-    echo '<script>alert("Wrong ID Number or Password. Please try again"); window.location.href = "login.php";</script>';
-    exit(); // Exit if password is incorrect
-  }
-
-  if ($data['type'] == 1) { // Assuming type 1 represents admin
-    $_SESSION['username'] = $IDnum;
-    $_SESSION['type'] = $data['type'];
-    header("Location: admin.php");
-    exit(); // Exit after redirecting
-  } else {
-    $_SESSION['username'] = $IDnum;
-    $_SESSION['type'] = $data['type'];
-    header("Location: checker.php");
-    exit(); // Exit after redirecting
-  }
-}
-?>
-
-
-
 
 
 <!DOCTYPE html>
@@ -80,7 +25,7 @@ if ($conn->connect_error) {
         }
 
         a {
-        color: #92badd;
+        color: #4068c0;
         display:inline-block;
         text-decoration: none;
         font-weight: 400;
@@ -88,7 +33,7 @@ if ($conn->connect_error) {
 
         h2 {
         text-align: center;
-        font-size: 16px;
+        /* font-size: 16px; */
         font-weight: 600;
         text-transform: uppercase;
         display:inline-block;
@@ -109,12 +54,13 @@ if ($conn->connect_error) {
         }
 
         #formContent {
+        display: flex;
         -webkit-border-radius: 10px 10px 10px 10px;
         border-radius: 10px 10px 10px 10px;
         background: #fff;
         padding: 30px;
         width: 90%;
-        max-width: 450px;
+        max-width: 650px;
         position: relative;
         padding: 0px;
         -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
@@ -127,12 +73,12 @@ if ($conn->connect_error) {
         }
 
         #formFooter {
-        background-color: #f6f6f6;
-        border-top: 1px solid #dce8f1;
+        /* background-color: #f6f6f6;
+        border-top: 1px solid #dce8f1; */
         padding: 25px;
         text-align: center;
-        -webkit-border-radius: 0 0 10px 10px;
-        border-radius: 0 0 10px 10px;
+        /* -webkit-border-radius: 0 0 10px 10px;
+        border-radius: 0 0 10px 10px; */
         }
 
         /* TABS */
@@ -143,13 +89,13 @@ if ($conn->connect_error) {
 
         h2.active {
         color: #0d0d0d;
-        border-bottom: 2px solid #5fbae9;
+        border-bottom: 2px solid #395dab;
         }
 
         /* FORM TYPOGRAPHY*/
 
         input[type=button], input[type=submit], input[type=reset]  {
-        background-color: #56baed;
+        background-color: #4068c0;
         border: none;
         color: white;
         padding: 15px 80px;
@@ -158,11 +104,11 @@ if ($conn->connect_error) {
         display: inline-block;
         text-transform: uppercase;
         font-size: 13px;
-        -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+        /* -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
         box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-        -webkit-border-radius: 5px 5px 5px 5px;
+        -webkit-border-radius: 5px 5px 5px 5px; */
         border-radius: 5px 5px 5px 5px;
-        margin: 5px 20px 40px 20px;
+        margin: 20px 40px 20px;
         -webkit-transition: all 0.3s ease-in-out;
         -moz-transition: all 0.3s ease-in-out;
         -ms-transition: all 0.3s ease-in-out;
@@ -171,7 +117,8 @@ if ($conn->connect_error) {
         }
 
         input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-        background-color: #39ace7;
+        background-color: #395dab;
+        
         }
 
         input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
@@ -182,7 +129,7 @@ if ($conn->connect_error) {
         transform: scale(0.95);
         }
 
-        input[type=text] {
+        input[type=text], input[type=password] {
         background-color: #f6f6f6;
         border: none;
         color: #0d0d0d;
@@ -203,12 +150,12 @@ if ($conn->connect_error) {
         border-radius: 5px 5px 5px 5px;
         }
 
-        input[type=text]:focus {
+        input[type=text]:focus, input[type=password]:focus {
         background-color: #fff;
-        border-bottom: 2px solid #5fbae9;
+        border-bottom: 2px solid #4068c0;
         }
 
-        input[type=text]:placeholder {
+        input[type=text]:placeholder input[type=password]:placeholder {
         color: #cccccc;
         }
 
@@ -301,13 +248,13 @@ if ($conn->connect_error) {
         bottom: -10px;
         width: 0;
         height: 2px;
-        background-color: #56baed;
+        background-color: #395dab;
         content: "";
         transition: width 0.2s;
         }
 
         .underlineHover:hover {
-        color: #0d0d0d;
+        color: #395dab;
         }
 
         .underlineHover:hover:after{
@@ -327,51 +274,59 @@ if ($conn->connect_error) {
         * {
         box-sizing: border-box;
         }
+
+
+
+        /* CSS FOR CONTAINER OF LOGO AND LOGIN INFO*/
+        /* ===================================== */
+        .formContent-logo{
+            display: flex;
+            align-items: center;
+            padding: 30px;
+            background-color: #395dab;
+        }
+    
+
+        .formContent-info{
+            background-color: #f6f6f6;
+        }
+
     </style>
 
 </head>
 <body>
     <div class="wrapper fadeInDown">
         <div id="formContent">
+            <div class="formContent-logo">
+                <img src="gsclogo.png" width="200px" height="200px" id="logo-details">
+            </div>
+            <div class="formContent-info">
+                <!-- Login Form -->
+                <form id="signInForm">
+                    <!-- Tabs Titles -->
+                    <h2 class="active" onclick="showSignIn()"> Sign In </h2>
+                    <!-- <h2 class="inactive underlineHover" onclick="showSignUp()">Sign Up </h2> -->
+
+                    <!-- Icon -->
+                    <div class="fadeIn first">
+                    <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
+                    </div>
+                    <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username" required>
+                    <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required>
+                    <input type="submit" class="fadeIn fourth" value="Log In">
+                </form>
+                <div id="formFooter">
+                <a class="underlineHover" href="#">Forgot Password?</a>
+                </div>
+            </div>
+
+            
             
 
-            <!-- Login Form -->
-            <form id="signInForm">
-                <!-- Tabs Titles -->
-                <h2 class="active" onclick="showSignIn()"> Sign In </h2>
-                <h2 class="inactive underlineHover" onclick="showSignUp()">Sign Up </h2>
-
-                <!-- Icon -->
-                <div class="fadeIn first">
-                <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
-                </div>
-                <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username">
-                <input type="text" id="password" class="fadeIn third" name="password" placeholder="Password">
-                <input type="submit" class="fadeIn fourth" value="Log In">
-            </form>
-
-            <!-- Sign Up Form -->
-            <form id="signUpForm" style="display: none;">
-                <!-- Tabs Titles -->
-                <h2 class="inactive underlineHover" onclick="showSignIn()"> Sign In </h2>
-                <h2 class="active" onclick="showSignUp()">Sign Up </h2>
-
-                <!-- Icon -->
-                <div class="fadeIn first">
-                <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
-                </div>
-                <input type="text" id="firstname" class="fadeIn second" name="firstname" placeholder="Firstname">
-                <input type="text" id="surname" class="fadeIn second" name="surname" placeholder="Surname">
-                <input type="text" id="email" class="fadeIn second" name="email" placeholder="Email">
-                <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username">
-                <input type="text" id="password" class="fadeIn second" name="login" placeholder="Password">
-                <input type="submit" class="fadeIn fourth" value="Create Account">
-            </form>
+            
 
             <!-- Remind Password -->
-            <div id="formFooter">
-            <a class="underlineHover" href="#">Forgot Password?</a>
-            </div>
+            
 
         </div>
     </div>
