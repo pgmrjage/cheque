@@ -590,10 +590,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
                     document.getElementById('payeeInput').value = response.data.PAYEE;
                     document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
-                    document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
+                    //document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
                     updateAmountInWords();
-                    updateCheque();
                     setCurrentDate();
+                    updateCheque();
                 } else {
                     alert('No details found for this DV number');
                 }
