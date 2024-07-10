@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Document</title>
 
     <style>
@@ -25,17 +26,17 @@
         }
 
         a {
-        color: #4068c0;
+        color: #fff;
         display:inline-block;
         text-decoration: none;
-        font-weight: 400;
+        font-weight: 600;
         }
 
         h2 {
         text-align: center;
         /* font-size: 16px; */
         font-weight: 600;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
         display:inline-block;
         margin: 40px 8px 10px 8px; 
         color: #cccccc;
@@ -48,13 +49,13 @@
         align-items: center;
         flex-direction: column; 
         justify-content: center;
-        width: 100%;
+        width: 36%;
         min-height: 100%;
         padding: 20px;
         }
 
         #formContent {
-        display: flex;
+        display: grid;
         -webkit-border-radius: 10px 10px 10px 10px;
         border-radius: 10px 10px 10px 10px;
         background: #fff;
@@ -95,15 +96,16 @@
         /* FORM TYPOGRAPHY*/
 
         input[type=button], input[type=submit], input[type=reset]  {
-        background-color: #4068c0;
-        border: none;
-        color: white;
+        /* background-color: #ffc42e; */
+        /* border: none; */
+        color: #333;
         padding: 15px 80px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
         text-transform: uppercase;
         font-size: 13px;
+        font-weight: 600;
         /* -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
         box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
         -webkit-border-radius: 5px 5px 5px 5px; */
@@ -117,7 +119,7 @@
         }
 
         input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-        background-color: #395dab;
+        background-color: #ffc42e;
         
         }
 
@@ -140,7 +142,7 @@
         font-size: 16px;
         margin: 5px;
         width: 85%;
-        border: 2px solid #f6f6f6;
+        border: 1px solid #333;
         -webkit-transition: all 0.5s ease-in-out;
         -moz-transition: all 0.5s ease-in-out;
         -ms-transition: all 0.5s ease-in-out;
@@ -150,14 +152,14 @@
         border-radius: 5px 5px 5px 5px;
         }
 
-        input[type=text]:focus, input[type=password]:focus {
+        /* input[type=text]:focus, input[type=password]:focus {
         background-color: #fff;
         border-bottom: 2px solid #4068c0;
         }
 
         input[type=text]:placeholder input[type=password]:placeholder {
         color: #cccccc;
-        }
+        } */
 
         /* ANIMATIONS */
 
@@ -280,15 +282,37 @@
         /* CSS FOR CONTAINER OF LOGO AND LOGIN INFO*/
         /* ===================================== */
         .formContent-logo{
-            display: flex;
+            /* display: flex;
             align-items: center;
-            padding: 30px;
+            justify-content: center; */
             background-color: #395dab;
         }
     
 
         .formContent-info{
             background-color: #f6f6f6;
+        }
+
+        .header-logo{
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            color: #fff;
+        }
+
+        
+
+        /* CSS FOR BACK BUTTON */
+        
+        .material-symbols-outlined {
+            display: flex;
+            justify-content: start;
+            align-items: center ;
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
         }
 
     </style>
@@ -298,26 +322,27 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <div class="formContent-logo">
-                <img src="gsclogo.png" width="200px" height="200px" id="logo-details">
+                <div class="header-logo">
+                    <!-- <img src="reset.png" width="120px" height="120px" id="logo-details"> -->
+                    <a href = "login.php"><span class="material-symbols-outlined">arrow_back</span></a>
+                </div>
             </div>
             <div class="formContent-info">
                 <!-- Login Form -->
                 <form id="signInForm">
                     <!-- Tabs Titles -->
-                    <h2 class="active" onclick="showSignIn()"> Sign In </h2>
+                    <h2 class="active" onclick="showSignIn()"> Change your password </h2>
+                    <p>Enter a new password below to change old password.</p>
                     <!-- <h2 class="inactive underlineHover" onclick="showSignUp()">Sign Up </h2> -->
 
                     <!-- Icon -->
                     <div class="fadeIn first">
                     <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
                     </div>
-                    <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username" required>
-                    <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required>
-                    <input type="submit" class="fadeIn fourth" value="Log In">
+                    <input type="password" id="password" class="fadeIn third" name="password" placeholder="Old Password" required>
+                    <input type="password" id="password" class="fadeIn third" name="password" placeholder="New Password" required>
+                    <input type="submit" class="fadeIn fourth" value="Change Password">
                 </form>
-                <div id="formFooter">
-                <a class="underlineHover" href="resetpass.php">Forgot Password?</a>
-                </div>
             </div>
 
             
