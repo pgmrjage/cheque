@@ -150,7 +150,10 @@ function numberToWords(num) {
     document.getElementById('accountNumberInput').addEventListener('input', updateCheque);
     document.getElementById('checkNumberInput').addEventListener('input', updateCheque);
     document.getElementById('payeeInput').addEventListener('input', updateCheque);
-    document.getElementById('amountInput').addEventListener('input', updateCheque);
+    document.getElementById('amountInput').addEventListener('input', function() {
+        updateAmountInWords();
+        updateCheque();
+    });
     document.getElementById('chequeDateInput').addEventListener('input', updateCheque);
     document.getElementById('dvNumberInput').addEventListener('input', updateCheque);
     function updateCheque() {

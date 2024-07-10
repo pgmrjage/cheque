@@ -1,21 +1,4 @@
-<?php
-// Include the database connection file
-require 'database.php';
 
-// Query to fetch account codes
-$sql = "SELECT account_code FROM tbbankaccount";
-$result = $conn->query($sql);
-
-$options = '';
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $options .= '<option value="' . $row["account_code"] . '">' . $row["account_code"] . '</option>';
-    }
-} else {
-    $options = '<option value="">No data found</option>';
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
