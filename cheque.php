@@ -104,7 +104,7 @@
         $sql = "
         
         SELECT check_id, check_number, payee, amount, date, dv_number, account_number
-        FROM tbcheckrecords
+        FROM tbcheckrecords ORDER BY check_id DESC
         
         
         ";

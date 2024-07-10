@@ -167,9 +167,9 @@ function numberToWords(num) {
 
         document.getElementById('accountNumber').innerText = accountNumber;
         document.getElementById('checkNumber').innerText = checkNumber;
-        document.getElementById('payee').innerText = payee;
+        document.getElementById('payee').innerText = "*** " + payee + " ***";
         document.getElementById('amount').innerText = parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('amountWords').innerText = amountWords;
+        document.getElementById('amountWords').innerText = "*** " + amountWords+ " ***";
         document.getElementById('chequeDate').innerText = formatDate(chequeDate);
         document.getElementById('dvNumber').innerText = dvNumber;
     }    
