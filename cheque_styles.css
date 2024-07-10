@@ -1,9 +1,17 @@
-body {
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+body{
+    display: block;
+    margin: 0px;
+}
+
+.whole-container {
     font-family: Arial, sans-serif;
     display: grid;
     margin-left: 15%;
     margin-right: 15%;
 }
+
 .cheque_container {
     max-width: auto;
     /* margin: 20px auto; */
@@ -189,7 +197,7 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    /* margin: 20px 0; */
 }
 table, th, td {
     border: 1px solid #ddd;
@@ -436,4 +444,116 @@ tr:hover {
         font-size: 17px;
         cursor: pointer;
         /* border-radius: 6px; */
+    }
+
+
+
+
+
+    /* CSS FOR SCROLLABLE HISTORY TABLE */
+    .container-table {
+        width: 100%;
+        height: 400px; /* Set the desired height */
+        overflow: hidden;
+        border: 1px solid #ccc; /* Optional: border for visual aid */
+        margin: 20px 0px;
+    }
+    
+    .table-wrapper {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto; /* Enable vertical scrolling */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        position: relative;
+    }
+
+    #scrollable-table {
+        width: 100%;
+        border-collapse: collapse; /* Ensure borders merge together */
+    }
+    
+    #scrollable-table thead {
+        position: sticky; /* Fix the header */
+        top: 0; /* Position the header at the top */
+        background: #fff; /* Optional: background color for header */
+        z-index: 1; /* Ensure header is above the body rows */
+    }
+    
+    #scrollable-table th,
+    #scrollable-table td {
+        padding: 10px;
+        border: hidden;
+        text-align: left; /* Align text to the left */
+    }
+    
+    #scrollable-table th {
+        background: #f9f9f9; /* Slightly different background for header */
+    }
+    
+
+
+
+    /* CSS FOR PRINT REPORT BUTTON */
+    #printreport-btn{
+        margin-top: 20px;
+        display: flex;
+        background-color: #4068c0;
+        border: none;
+        color: white;
+        padding: 15px 80px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 13px;
+        /* -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+        box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+        -webkit-border-radius: 5px 5px 5px 5px; */
+        border-radius: 5px 5px 5px 5px;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+    #printreport-btn:hover{
+        background-color: #395dab;
+    }
+
+
+
+    /* CSS FOR HEADER */
+    .header{
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        background: #4068c0;
+        color: white;
+        font-family: "Poppins", sans-serif;
+        height: 65px;
+    }
+
+    .header .header-left, .header-right{
+        display: flex;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .title-header{
+        margin-left: 15px;
+    }
+
+    .username{
+        margin-right: 25px;
+    }
+
+
+    /* CSS FOR LOGOUT */
+    
+    .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
     }

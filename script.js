@@ -290,6 +290,7 @@ function updateSummary(month, year) {
 
     document.getElementById("monthlyTotal").innerText = monthlyTotal;
     document.getElementById("annualTotal").innerText = annualTotal;
+    document.getElementById("annualTotal2").innerText = annualTotal;
 }
 
 function updateReportTable(year) {
@@ -393,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var input, filter, table, tr,td, i, txtValue;
         input = document.getElementById("searchvalue");
         filter = input.value.toUpperCase();
-        table = document.getElementById("dataTable");
+        table = document.getElementById("scrollable-table");
         tr = table.getElementsByTagName("tr");
 
         // Loop through all table rows, and hide those who don't match the search query

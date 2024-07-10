@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="cheque_styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -14,6 +15,22 @@
     
 </head>
 <body>
+
+<header class="header">
+    <div class="header-left">
+        <img src="gsclogo.png" width="50px" height="50px" id="logo-details">
+        <h1 class="title-header">CTO-CPS</h1>
+    </div>
+    <div class="header-right">
+        <span class="username">Welcome, User</span>
+        <span class="material-symbols-outlined" onclick="Logout()">Logout</span>
+    </div>
+</header>
+
+
+<div class="whole-container">
+
+
 
 <div class="tab-container">
   <div class="tab active" onclick="openTab(event, 'tab1')">Print</div>
@@ -25,7 +42,7 @@
 <!-- TAB 1 - PRINTING CHEQUE SECTION -->
 <div id="tab1" class="tab-content active">
 <div class="cheque_container">
-    <h2>Cheque Printing System</h2>
+    <h2>Cheque Information:</h2>
 
     <form id="chequeForm">
     <div class="form-group">
@@ -38,19 +55,19 @@
     </div>
     <div class="form-group">
         <label for="accountNumber">Account Number:</label>
-        <input type="text" id="accountNumberInput" name="accountNumber" required>
+        <input type="text" id="accountNumberInput" name="accountNumber" readonly required>
     </div>
     <div class="form-group">
         <label for="checkNumber">Check Number:</label>
-        <input type="text" id="checkNumberInput" name="checkNumber" required>
+        <input type="text" id="checkNumberInput" name="checkNumber" readonly required>
     </div>
     <div class="form-group">
         <label for="payee">Payee:</label>
-        <input type="text" id="payeeInput" name="payee" required>
+        <input type="text" id="payeeInput" name="payee" readonly required>
     </div>
     <div class="form-group">
         <label for="amount">Amount:</label>
-        <input type="number" id="amountInput" name="amount" step="0.01" required>
+        <input type="number" id="amountInput" name="amount" step="0.01" readonly required>
     </div>
     <div class="form-group">
         <label for="amountWords">Amount (in words):</label>
@@ -58,7 +75,7 @@
     </div>
     <div class="form-group">
         <label for="chequeDate">Date:</label>
-        <input type="date" id="chequeDateInput" name="chequeDate" required>
+        <input type="date" id="chequeDateInput" name="chequeDate" readonly required>
     </div>
     <button type="submit" class="styled-button" onclick="save_and_print()">Print and Save</button>
     </form>
@@ -67,6 +84,7 @@
 
     <div id="responseMessage" style="display:none;"></div>
 
+    <h2>Cheque Preview:</h2>
     <div id="cheque">
         <div class="cheque-field" id="accountNumber"></div>
         <div class="cheque-field" id="payee"></div>
@@ -111,70 +129,73 @@
         $result = $conn->query($sql);
         ?>
 
-        <table id="dataTable">
-        <thead>
-            <tr>
-                
-                <th>Cheque Number</th>
-                <th>Payee</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>DV Number</th>
-                <th>Account Number</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-        require_once('reprint.php');
-
-        if ($result->num_rows > 0) {
-            // Output data of each row
-            while($row = $result->fetch_assoc()) {
-                echo "<tr id='record-" . $row["check_id"] . "'>";
-                echo "<td>" . $row["check_number"] . "</td>";
-                echo "<td>" . $row["payee"] . "</td>";
-                echo "<td>" . $row["amount"] . "</td>";
-                $date = new DateTime($row["date"]);
-                echo "<td>" . $date->format('m/d/Y') . "</td>";
-                echo "<td>" . $row["dv_number"] . "</td>";
-                echo "<td>" . $row["account_number"] . "</td>";
-                echo "<td class='action-btn-container'>";
-
-                
-                echo '<div hidden id="cheque">';
-                    echo '<div id=' . $row["check_id"] . '>';
-                        echo '<div class="cheque-field" id="accountNumber">' . $row["account_number"] . '</div>';
-                        echo '<div class="cheque-field" id="payee">'. $row["payee"] . '</div>';
-                        echo '<div class="cheque-field" id="amount">' . number_format($row["amount"], 2) . '</div>';
-                        echo '<div class="cheque-field" id="amountWords">';
-                        //amount to words
-                        echo amountToWords($row["amount"]);
-                        echo '</div>';
-                        echo '<div class="cheque-field" id="chequeDate">' . $date->format('m d Y') . '</div>';
-                        echo '<div class="cheque-field" id="dvNumber">' . $row["dv_number"] . '</div>';
-                        echo '<div class="cheque-field" id="checkNumber">' . $row["check_number"] . '</div>';
-                    echo '</div>';
-                echo '</div>';
-
-                // REPRINT
-                echo "<button class='action-button-red' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
-
-                echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
-                echo "</td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='7'>No records found</td></tr>";
-        }
-        // Close the database connection
-        $conn->close();
-        ?>
         
-            
-        </tbody>
-    </table>
+        <div class="container-table">
+            <div class="table-wrapper">
+                <table id="scrollable-table">
+                <thead>
+                    <tr>
+                        <th>Cheque Number</th>
+                        <th>Payee</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>DV Number</th>
+                        <th>Account Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                require_once('reprint.php');
 
+                if ($result->num_rows > 0) {
+                    // Output data of each row
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr id='record-" . $row["check_id"] . "'>";
+                        echo "<td>" . $row["check_number"] . "</td>";
+                        echo "<td>" . $row["payee"] . "</td>";
+                        echo "<td>" . $row["amount"] . "</td>";
+                        $date = new DateTime($row["date"]);
+                        echo "<td>" . $date->format('m/d/Y') . "</td>";
+                        echo "<td>" . $row["dv_number"] . "</td>";
+                        echo "<td>" . $row["account_number"] . "</td>";
+                        echo "<td class='action-btn-container'>";
+
+                        
+                        echo '<div hidden id="cheque">';
+                            echo '<div id=' . $row["check_id"] . '>';
+                                echo '<div class="cheque-field" id="accountNumber">' . $row["account_number"] . '</div>';
+                                echo '<div class="cheque-field" id="payee">'. $row["payee"] . '</div>';
+                                echo '<div class="cheque-field" id="amount">' . number_format($row["amount"], 2) . '</div>';
+                                echo '<div class="cheque-field" id="amountWords">';
+                                //amount to words
+                                echo amountToWords($row["amount"]);
+                                echo '</div>';
+                                echo '<div class="cheque-field" id="chequeDate">' . $date->format('m d Y') . '</div>';
+                                echo '<div class="cheque-field" id="dvNumber">' . $row["dv_number"] . '</div>';
+                                echo '<div class="cheque-field" id="checkNumber">' . $row["check_number"] . '</div>';
+                            echo '</div>';
+                        echo '</div>';
+
+                        // REPRINT
+                        echo "<button class='action-button-red' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
+
+                        echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>No records found</td></tr>";
+                }
+                // Close the database connection
+                $conn->close();
+                ?>
+                
+                    
+                </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -187,7 +208,7 @@
         <div class="calendar-container">
         <table class="calendar">
             <thead>
-                <tr class="header">
+                <tr class="calendar-header">
                     <th colspan="7">
                         <button onclick="prevMonth()">&#10094;</button>
                         <span id="monthYear"></span>
@@ -218,7 +239,7 @@
     </div>
         
     <div id="report">
-            <h3>Monthly Report</h3>
+            <h3>Monthly and Annual Report</h3>
             <table id="reportTable">
                 <thead>
                     <tr>
@@ -233,17 +254,20 @@
 
                 <thead>
                     <tr>
-                        
+                        <th>Annual</th>
+                        <th><span id="annualTotal2">0</span></th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
 
-    <button onclick="printReport()">Print Report</button>
+    <button id="printreport-btn" onclick="printReport()">Print Report</button>
+    
 </div>
 
 <script src="script.js"></script>
 
+</div>
 </body>
 </html>
