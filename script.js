@@ -374,6 +374,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function save_and_print(){  
         saveFormData();
         generateCheque();  
+        // Get the snackbar DIV
+        var x = document.getElementById("snackbar");
+
+        // Add the "show" class to DIV
+        x.className = "show";
+
+        // After 3 seconds, remove the show class from DIV
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000);
     }
 
 
@@ -421,12 +429,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // JS FOR SUMMARY PRINT REPORT
     function printReport(){
-        var printContent = document.getElementById("report").innerHTML;
+        var printContent = document.getElementById("tblreport").innerHTML;
         var originalContent = document.body.innerHTML;
         document.body.innerHTML = printContent;
 
         var style = document.createElement('style');
-        style.innerHTML = '@page { size: portrait; }';
+        style.innerHTML = '@page { size: portrait; max-width: 75%; height: auto; margin: 50px;  }';
         document.head.appendChild(style);
 
         window.print();

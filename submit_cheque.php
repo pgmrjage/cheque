@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO tbcheckrecords (check_number, amount, date, payee, dv_number, account_number) 
             VALUES ('$checkNumber', '$amount', '$chequeDate', '$payee', '$dvNumber', '$accountNumber')";
     if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
+        echo '<script>alert("New record created successfully");</script>';
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }

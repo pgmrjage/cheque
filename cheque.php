@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<header class="header">
+<header class="mainHeader">
     <div class="header-left">
         <img src="gsclogo.png" width="50px" height="50px" id="logo-details">
         <h1 class="title-header">CTO-CPS</h1>
@@ -70,7 +70,7 @@
         <input type="number" id="amountInput" name="amount" step="0.01" readonly required>
     </div>
     <div class="form-group">
-        <label for="amountWords">Amount (in words):</label>
+        <label for="amountWords">Amount (<i>in words</i>):</label>
         <input type="text" id="amountWordsInput" name="amountWords" readonly required>
     </div>
     <div class="form-group">
@@ -80,7 +80,9 @@
     <button type="submit" class="styled-button" onclick="save_and_print()">Print and Save</button>
     </form>
 
-
+    <!-- SNACKBAR || TOAST NOTIF -->
+    <!-- The actual snackbar -->
+    <div id="snackbar">Data has been saved</div>
 
     <div id="responseMessage" style="display:none;"></div>
 
@@ -237,8 +239,8 @@
         </div>  
 
     </div>
-        
-    <div id="report">
+     
+    <div id="tblreport">
             <h3>Monthly and Annual Report</h3>
             <table id="reportTable">
                 <thead>
@@ -263,7 +265,7 @@
     </div>
 
     <button id="printreport-btn" onclick="printReport()">Print Report</button>
-    
+    <!--   -->
 </div>
 
 <script src="script.js"></script>
