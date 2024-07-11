@@ -1,4 +1,7 @@
-
+<?php
+    session_start();
+    $username = $_SESSION['username'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +25,8 @@
         <h1 class="title-header">CTO-CPS</h1>
     </div>
     <div class="header-right">
-        <span class="username">Welcome, User</span>
-        <span class="material-symbols-outlined" onclick="Logout()">Logout</span>
+        <span class="username">Welcome, <?php echo "$username";?></span>
+        <span class="material-symbols-outlined" onclick="confirmLogout()">Logout</span>
     </div>
 </header>
 

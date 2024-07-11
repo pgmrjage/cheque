@@ -291,6 +291,10 @@
             background-color: #f6f6f6;
         }
 
+
+        .error {
+            color: red;
+        }
     </style>
 
 </head>
@@ -313,6 +317,7 @@
                     </div>
                     <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username" required>
                     <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required>
+                    <div id="error-message" class="error"></div>
                     <input type="submit" class="fadeIn fourth" value="Log In">
                 </form>
                 <div id="formFooter">
@@ -332,6 +337,31 @@
     </div>
 
     <script>
+        document.getElementById('signInForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'authenticate.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        window.location.href = response.redirectURL;
+                    } else {
+                        errorMessage.textContent = 'Incorrect username or password';
+                    }
+                }
+            };
+
+            xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+        });
+
         function showSignIn() {
             document.getElementById('signInForm').style.display = 'block';
             document.getElementById('signUpForm').style.display = 'none';

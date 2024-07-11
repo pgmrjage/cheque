@@ -613,5 +613,28 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         xhr.send();
     }
+
+
+
+    //LOGGING OUT
+    function confirmLogout() {
+        const confirmation = confirm("Are you sure you want to log out?");
+        if (confirmation) {
+            logout();
+        }
+    }
+
+    function logout() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'logout.php', true);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.location.href = 'index.php';
+            }
+        };
+
+        xhr.send();
+    }
     
     
