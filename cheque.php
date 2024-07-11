@@ -180,7 +180,7 @@
                         echo '</div>';
 
                         // REPRINT
-                        echo "<button class='action-button-red' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
+                        echo "<button class='action-button-green' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
 
                         echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
                         echo "</td>";
@@ -265,7 +265,6 @@
     </div>
 
     <button id="printreport-btn" onclick="printReport()">Print Report</button>
-    <!--   -->
 </div>
 
 <script src="script.js"></script>

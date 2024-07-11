@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
         x.className = "show";
 
         // After 3 seconds, remove the show class from DIV
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000);
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
 

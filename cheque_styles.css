@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 body{
+    display: block;
+    margin: 0px;
     font-family: "Poppins", sans-serif;
 }
 
@@ -23,6 +25,8 @@ body{
     
 }
 .form-group {
+    display: flex;
+    align-items: center;
     margin-bottom: 15px;
 }
 .form-group label {
@@ -307,7 +311,7 @@ tr:hover {
 
 /*BUTTON STYLING*/
 .styled-button {
-    background-color: #4068c0; /* Green background */
+    background-color: #4672d0; /* Green background */
     border: none;             /* Remove borders */
     color: white;             /* White text */
     padding: 15px 32px;       /* Some padding */
@@ -404,7 +408,7 @@ tr:hover {
         align-items: center;
     }
     /* GREEN */
-    form.action-button-green button{
+    .action-button-green{
         margin: 5px;
         background: none;
         border: 3px solid green;
@@ -414,7 +418,7 @@ tr:hover {
         transition: 200ms;
     }
 
-    form.action-button-green button:hover{
+    .action-button-green:hover{
         margin: 5px;
         background: green;
         color: white;
@@ -425,7 +429,7 @@ tr:hover {
     }
 
     /* RED */
-    form.action-button-red button{
+    .action-button-red{
         margin: 5px;
         background: none;
         border: 3px solid red;
@@ -435,7 +439,7 @@ tr:hover {
         transition: 200ms;
     }
 
-    form.action-button-red button:hover{
+    .action-button-red:hover{
         margin: 5px;
         background: red;
         color: white;
@@ -486,7 +490,8 @@ tr:hover {
     }
     
     #scrollable-table th {
-        background: #f9f9f9; /* Slightly different background for header */
+        background: #4068c0; /* Slightly different background for header */
+        color: #fff;
     }
     
 
