@@ -1,4 +1,30 @@
+<?php
 
+require "database.php";
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Assuming you have the user's username stored in a session or retrieved from a form
+$user = 'username';
+
+// Prepare and execute the query to get the password for the user
+$sql = "SELECT password FROM account WHERE username = '$user'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Fetch the password from the result
+    $row = $result->fetch_assoc();
+    $retrievedPassword = $row['password'];
+} else {
+    $retrievedPassword = ''; // Default value if no password found
+}
+
+$conn->close();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -316,12 +342,30 @@
                     <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
                     </div>
                     <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username" required>
-                    <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required>
+
+                    <div class="fadeIn third">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <div id="showPassDiv">
+                            <input type="checkbox" id="showPass" onclick="togglePasswordVisibility()">
+                            <label for="showPass">Show Password</label>
+                        </div>
+                    </div>
+                    
+                    <!-- NO USE CODE BELOW -->
+                    <!-- <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" value="<?php echo htmlspecialchars($retrievedPassword); ?>" required>
+                    
+                    <div id="showPassDiv">
+                    <input type="checkbox" id="showPass" onclick="showpassword()">
+                    <label for="showPass">Show Password</label>
+                    </div> -->
+
+
                     <div id="error-message" class="error"></div>
                     <input type="submit" class="fadeIn fourth" value="Log In">
                 </form>
                 <div id="formFooter">
-                <a class="underlineHover" href="resetpass.php">Forgot Password?</a>
+                <!-- <a class="underlineHover" href="resetpass.php">Forgot Password?</a> -->
+                 <p><b>Welcome back!</b> <i>Please Enter your details above.</i></p>
                 </div>
             </div>
 
@@ -373,6 +417,8 @@
             
         }
     </script>
+
+<script src="script.js"></script>
 </body>
 </html>
 

@@ -469,6 +469,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
         }
 
+        // FOR REFERENCE USE
+        // for (i = 1; i < tr.length; i++) {
+        //     td = tr[i].getElementsByTagName("td");
+        //     tr[i].style.display = "none";
+        //     // Only check the text content of the first and second td (index 0 and 1)
+        //     for (var j = 0; j < 2; j++) {
+        //         txtValue = td[j].textContent || td[j].innerText;
+        //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //             tr[i].style.display = "";
+        //             break;
+        //         }
+        //     }
+        // }
+
     }
     
 
@@ -695,4 +709,32 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send();
     }
     
+    
+
+
+
+    // JS FOR SHOW PASSWORD
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        var showPassCheckbox = document.getElementById('showPass');
+        
+        if (showPassCheckbox.checked) {
+          passwordInput.type = 'text';
+        } else {
+          passwordInput.type = 'password';
+        }
+      }
+
+
+    // function showpassword(){
+    //     document.getElementById('showPass').click();
+    //     var x = document.getElementById("password");
+    //     if (x.type === "password"){
+    //         x.type = "text";
+    //     }else{
+    //         x.type = "password";
+    //     }
+    // }
+
     
