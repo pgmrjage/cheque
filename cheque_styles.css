@@ -105,13 +105,17 @@ body{
     
 }
 #payee {
-    top: 68px;
+    top: 65px;
     left: 122px;
-    width: 600px;
-    white-space: nowrap;
+    width: 380px;
+    height: 28px;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 12px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
 }
 #dvNumber {
     top: 220px;
@@ -559,6 +563,7 @@ tr:hover {
     /* CSS FOR LOGOUT */
     
     .material-symbols-outlined {
+        cursor:pointer;
     font-variation-settings:
     'FILL' 0,
     'wght' 400,
