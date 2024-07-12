@@ -399,12 +399,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function save_and_print(){
-        saveFormData();
-        generateCheque();  
-    
-        // Save the state to session storage
-        sessionStorage.setItem('showSnackbar', 'true');
-        location.reload();
+        if(document.getElementById("amountInput").value.trim() === "")
+            alert("invalid input");
+        else
+        {
+            saveFormData();
+            generateCheque();  
+            // Save the state to session storage
+            sessionStorage.setItem('showSnackbar', 'true');
+            location.reload();
+        }
+    }
+    function save_only(){
+        if(document.getElementById("amountInput").value.trim() === "")
+            alert("invalid input");
+        else
+        {
+            saveFormData();
+            sessionStorage.setItem('showSnackbar', 'true');
+            location.reload();
+        }
     }
     //for the snackbar after the page reloaded
     window.onload = function() {
