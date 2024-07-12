@@ -52,10 +52,6 @@
         <label for="dvNumber">DV Number:</label>
         <input type="text" id="dvNumberInput" name="dvNumber" required>
     </div>  
-    <div class="form-group hidden" id="newAccountInputGroup">
-        <label for="newAccountCode">New Account Code:</label>
-        <input type="text" id="newAccountCode" name="newAccountCode">
-    </div>
     <div class="form-group">
         <label for="accountNumber">Account Number:</label>
         <input type="text" id="accountNumberInput" name="accountNumber" readonly required>
@@ -66,7 +62,7 @@
     </div>
     <div class="form-group">
         <label for="payee">Payee:</label>
-        <input type="text" id="payeeInput" name="payee" readonly required>
+        <input type="text" id="payeeInput" name="payee" required>
     </div>
     <div class="form-group">
         <label for="amount">Amount:</label>

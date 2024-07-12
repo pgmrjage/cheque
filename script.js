@@ -1,6 +1,28 @@
 // TOP SCRIPT
 //payee start
-
+$(function() {
+    $("#dvNumberInput").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "getDvNo.php",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 2,
+        select: function(event, ui) {
+            // Code to execute when an item is selected
+            //console.log("Selected item: ", ui.item.value);
+            fetchDetails(ui.item.value);
+        }
+    });
+});
 
 $("#chequeForm").submit(function(event) {
     event.preventDefault();
@@ -26,6 +48,7 @@ $("#chequeForm").submit(function(event) {
 
 function openTab(evt, tabName) {
     // Get all elements with class="tab-content" and hide them
+    
     var tabContents = document.getElementsByClassName("tab-content");
     for (var i = 0; i < tabContents.length; i++) {
         tabContents[i].style.display = "none";
@@ -43,7 +66,11 @@ function openTab(evt, tabName) {
 
     // Store the active tab in local storage
     localStorage.setItem("activeTab", tabName);
+    
 }
+
+
+
 // Show the default tab
 document.addEventListener("DOMContentLoaded", function() {
     var defaultTab = localStorage.getItem("activeTab") || "tab2"; // Default to 'History' tab if none is set
@@ -142,11 +169,11 @@ function numberToWords(num) {
         document.head.appendChild(style);
 
         window.print();
-        
-        
         document.body.innerHTML = originalContent;
         document.head.removeChild(style);
+        
     }
+    
     document.getElementById('accountNumberInput').addEventListener('input', updateCheque);
     document.getElementById('checkNumberInput').addEventListener('input', updateCheque);
     document.getElementById('payeeInput').addEventListener('input', updateCheque);
@@ -169,7 +196,7 @@ function numberToWords(num) {
         document.getElementById('checkNumber').innerText = checkNumber;
         document.getElementById('payee').innerText = "*** " + payee + " ***";
         document.getElementById('amount').innerText = parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('amountWords').innerText = "*** " + amountWords+ " ***";
+        document.getElementById('amountWords').innerText = amountWords;
         document.getElementById('chequeDate').innerText = formatDate(chequeDate);
         document.getElementById('dvNumber').innerText = dvNumber;
     }    
@@ -371,18 +398,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function save_and_print(){  
+    function save_and_print(){
         saveFormData();
         generateCheque();  
-        // Get the snackbar DIV
-        var x = document.getElementById("snackbar");
-
-        // Add the "show" class to DIV
-        x.className = "show";
-
-        // After 3 seconds, remove the show class from DIV
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    
+        // Save the state to session storage
+        sessionStorage.setItem('showSnackbar', 'true');
+        location.reload();
     }
+    //for the snackbar after the page reloaded
+    window.onload = function() {
+        if (sessionStorage.getItem('showSnackbar') === 'true') {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            // Clear the session storage flag
+            sessionStorage.removeItem('showSnackbar');
+        }
+    };
+        
 
 
 
@@ -583,11 +617,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //hail hydra database retrieval
-    document.getElementById('dvNumberInput').addEventListener('blur', function() {
+    document.getElementById('dvNumberInput').addEventListener('change', function() {
         var dvNumber = this.value;
-        if (dvNumber) {
+        //if (event.key === 'Enter' || event.key === 'Tab') {
             fetchDetails(dvNumber);
-        }
+        //}
+    });
+    document.getElementById('dvNumberInput').addEventListener('input', function() {
+        var dvNumber = this.value;
+        //if (event.key === 'Enter' || event.key === 'Tab') {
+            fetchDetails(dvNumber);
+        //}
     });
     
     function fetchDetails(dvNumber) {
@@ -600,14 +640,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     document.getElementById('accountNumberInput').value = response.data.AA_NO;
                     document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
-                    document.getElementById('payeeInput').value = response.data.PAYEE;
+                    document.getElementById('payeeInput').value = response.data.PAYEE.toUpperCase();
                     document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
                     //document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
                     updateAmountInWords();
                     setCurrentDate();
                     updateCheque();
                 } else {
-                    alert('No details found for this DV number');
+                    //alert('No details found for this DV number');
+                    document.getElementById('accountNumberInput').value = 'No details found for this DV number';
+                    document.getElementById('checkNumberInput').value = 'No details found for this DV number';
+                    document.getElementById('payeeInput').value = 'No details found for this DV number';
+                    document.getElementById('amountInput').value = null;
                 }
             }
         };

@@ -324,7 +324,7 @@
             <div class="formContent-logo">
                 <div class="header-logo">
                     <!-- <img src="reset.png" width="120px" height="120px" id="logo-details"> -->
-                    <a href = "login.php"><span class="material-symbols-outlined">arrow_back</span></a>
+                    <a href = "index.php"><span class="material-symbols-outlined">arrow_back</span></a>
                 </div>
             </div>
             <div class="formContent-info">
