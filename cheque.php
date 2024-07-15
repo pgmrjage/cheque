@@ -129,12 +129,12 @@
         
         ";
         $result = $conn->query($sql);
-        ?>
-
         
-        <div class="container-table">
-            <div class="table-wrapper">
-                <table id="scrollable-table">
+
+        echo "
+        <div class=\"container-table\">
+            <div class=\"table-wrapper\">
+                <table id=\"scrollable-table\">
                 <thead>
                     <tr>
                         <th>Cheque Number</th>
@@ -146,8 +146,8 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                <?php
+                <tbody>";
+                
                 require_once('reprint.php');
 
                 if ($result->num_rows > 0) {
