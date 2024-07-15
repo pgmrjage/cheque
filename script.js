@@ -737,4 +737,75 @@ document.addEventListener('DOMContentLoaded', function () {
     //     }
     // }
 
+
+
+
+
+    // JS FOR TESTING TABLE
+
+    let currentPage = 1;
+    let entriesPerPage = 10;
+
+    function updateEntries() {
+        entriesPerPage = document.getElementById('entries').value;
+        currentPage = 1; // Reset to first page on filter change
+        loadData();
+    }
+
+    function loadData() {
+        const searchValue = document.getElementById('searchvalue').value;
+        const params = new URLSearchParams({
+            page: currentPage,
+            entries: entriesPerPage,
+            search: searchValue
+        });
+
+        fetch(`fetch_data.php?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+                data.records.forEach(record => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${record.check_number}</td>
+                        <td>${record.payee}</td>
+                        <td>${record.amount}</td>
+                        <td>${record.date}</td>
+                        <td>${record.dv_number}</td>
+                        <td>${record.account_number}</td>
+                        <td class='action-btn-container'>
+                            <button class='action-button-green' onclick='printchequeHistory(${record.check_id})'>Reprint</button>
+                            <button class='action-button-red' onclick='deleteRecord(${record.check_id})'>Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                const pagination = document.getElementById('pagination');
+                pagination.innerHTML = '';
+                if (entriesPerPage !== 'all') {
+                    for (let i = 1; i <= data.totalPages; i++) {
+                        const a = document.createElement('a');
+                        a.href = '#';
+                        a.textContent = i;
+                        a.onclick = function() {
+                            currentPage = i;
+                            loadData();
+                        };
+                        if (i === currentPage) {
+                            a.classList.add('active');
+                        }
+                        pagination.appendChild(a);
+                    }
+                }
+            });
+    }
+
+    document.getElementById('searchvalue').addEventListener('keyup', () => {
+        currentPage = 1; // Reset to first page on search
+        loadData();
+    });
+
+    window.onload = loadData;
     

@@ -106,7 +106,7 @@
     <div class="history_container">
         <h2>Logs</h2>
         <div class="search">
-            <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()">
+            <!-- <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()"> -->
             <button class="searchbutton">
                 <svg class="searchicon" aria-hidden="true" viewBox="0 0 24 24">
                     <g>
@@ -224,6 +224,60 @@
                 </table>
             </div>
         </div>
+
+
+        <!-- TESTING TABLE -->
+            
+
+            <div class="history_container">
+        <h2>Logs</h2>
+        <div class="search">
+            <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()">
+            <button class="searchbutton">
+                <svg class="searchicon" aria-hidden="true" viewBox="0 0 24 24">
+                    <g>
+                        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                    </g>
+                </svg>
+            </button>
+        </div>
+        <div class="filter">
+            <label for="entries">Show entries:</label>
+            <select id="entries" onchange="updateEntries()">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="15">15</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+        <div class="container-table">
+            <div class="table-wrapper">
+                <table id="scrollable-table">
+                    <thead>
+                        <tr>
+                            <th>Cheque Number</th>
+                            <th>Payee</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>DV Number</th>
+                            <th>Account Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Data will be loaded here dynamically -->
+                    </tbody>
+                </table>
+                <div class="pagination" id="pagination">
+                    <!-- Pagination links will be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+        </div>
+        
+
+        
+
     </div>
 </div>
 
