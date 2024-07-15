@@ -625,3 +625,26 @@ tr:hover {
         max-width: 75%;
         display: block;
     } */
+
+    /* Pagination links */
+
+    .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    position: sticky; /* Fix the header */
+        top: 0; /* Position the header at the top */
+        background: #fff; /* Optional: background color for header */
+        z-index: 2; /* Ensure header is above the body rows */
+  }
+  
+  /* Style the active/current link */
+    .pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+  }
+  
+  /* Add a grey background color on mouse-over */
+    .pagination a:hover:not(.active) {background-color: #ddd;}

@@ -119,12 +119,22 @@
 
         <?php
         require "database.php";     
+
+        // // Pagination variables
+        // // Number of items per page
+        // $itemsPerPage = 10; 
+        // // Get current page number
+        // $currentpage = isset($_GET['page']) ? $_GET['page'] : 1; 
+        // // Calculate starting index for the slice
+        // $start = ($currentpage - 1) * $itemsPerPage; 
+
         // Include the database connection
         // Fetch data from the database
         $sql = "
         
         SELECT check_id, check_number, payee, amount, date, dv_number, account_number
-        FROM tbcheckrecords ORDER BY check_id DESC
+        FROM tbcheckrecords 
+        ORDER BY check_id DESC
         
         
         ";
@@ -189,6 +199,22 @@
                 } else {
                     echo "<tr><td colspan='7'>No records found</td></tr>";
                 }
+
+                // // Pagination links
+                // $sql = "SELECT COUNT(*) AS total FROM tbcheckrecords";
+                // $result = $conn->query($sql);
+                // $row = $result->fetch_assoc();
+                // $totalItems = $row['total'];
+                // $totalPages = ceil($totalItems / $itemsPerPage);
+
+                // echo "<div class='pagination'>";
+                // for ($page = 1; $page <= $totalPages; $page++) {
+                //     echo "<a href='?page=$page' ";
+                //     if ($page == $currentpage) echo "class='active'";
+                //     echo ">$page</a>";
+                // }
+                // echo "</div>";
+
                 // Close the database connection
                 $conn->close();
                 ?>
