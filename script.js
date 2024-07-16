@@ -738,4 +738,197 @@ document.addEventListener('DOMContentLoaded', function () {
     //     }
     // }
 
+
+
+
+
+    // JS FOR TESTING TABLE
+
+    let currentPage = 1;
+    let entriesPerPage = 5;
+    let maxDisplayedPages = 3;
+
+    function updateEntries() {
+        entriesPerPage = document.getElementById('entries').value;
+        currentPage = 1; // Reset to first page on filter change
+        loadData();
+    }
+
+    function loadData() {
+        const searchValue = document.getElementById('searchvalue').value;
+        const params = new URLSearchParams({
+            page: currentPage,
+            entries: entriesPerPage,
+            search: searchValue
+        });
+
+        fetch(`fetch_data.php?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+                data.records.forEach(record => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${record.check_number}</td>
+                        <td>${record.payee}</td>
+                        <td>${record.amount}</td>
+                        <td>${record.date}</td>
+                        <td>${record.dv_number}</td>
+                        <td>${record.account_number}</td>
+                        <td class='action-btn-container'>
+                            <button class='action-button-green' onclick='printchequeHistory(${record.check_id})'>Reprint</button>
+                            <button class='action-button-red' onclick='deleteRecord(${record.check_id})'>Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Update entries count
+                const startEntry = (currentPage - 1) * entriesPerPage + 1;
+                const endEntry = Math.min(currentPage * entriesPerPage, data.records.length + (currentPage - 1) * entriesPerPage);
+                document.getElementById('start-entry').textContent = startEntry;
+                document.getElementById('end-entry').textContent = endEntry;
+                document.getElementById('total-entries').textContent = data.totalEntries;
+
+                renderPagination(data.totalPages);
+            });
+    }
+
+    
+    function renderPagination(totalPages) {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+    
+        // Previous page button
+        if (currentPage > 1) {
+            const prevButton = document.createElement('a');
+            prevButton.href = '#';
+            prevButton.textContent = 'Prev';
+            prevButton.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    loadData(); // Load data for the previous page
+                }
+            });
+            pagination.appendChild(prevButton);
+        }
+    
+        // Numbered page links
+        const pageNumbers = document.createElement('span');
+        pageNumbers.id = 'page-numbers';
+    
+        // Calculate start and end for centered display
+        let startPage = Math.max(1, currentPage - 1); // Adjusted to show 1 page before current
+        let endPage = Math.min(totalPages, startPage + 2); // Show up to 3 pages
+    
+        if (endPage - startPage + 1 < 3) {
+            startPage = Math.max(1, endPage - 2);
+        }
+    
+        // First page link
+        if (startPage > 1) {
+            const firstPage = document.createElement('a');
+            firstPage.href = '#';
+            firstPage.textContent = '1';
+            firstPage.addEventListener('click', function() {
+                currentPage = 1;
+                loadData(); // Load data for the first page
+            });
+            pageNumbers.appendChild(firstPage);
+    
+            if (startPage > 2) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = ' . . . ';
+                pageNumbers.appendChild(ellipsis);
+            }
+        }
+    
+        // Middle page links
+        for (let i = startPage; i <= endPage; i++) {
+            const pageLink = document.createElement('a');
+            pageLink.href = '#';
+            pageLink.textContent = i;
+            if (i === currentPage) {
+                pageLink.classList.add('current-page');
+            }
+            pageLink.addEventListener('click', function() {
+                currentPage = i;
+                loadData(); // Load data for the selected page
+            });
+            pageNumbers.appendChild(pageLink);
+        }
+    
+        // Last page link
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = ' . . . ';
+                pageNumbers.appendChild(ellipsis);
+            }
+    
+            const lastPage = document.createElement('a');
+            lastPage.href = '#';
+            lastPage.textContent = totalPages;
+            lastPage.addEventListener('click', function() {
+                currentPage = totalPages;
+                loadData(); // Load data for the last page
+            });
+            pageNumbers.appendChild(lastPage);
+        }
+    
+        pagination.appendChild(pageNumbers);
+    
+        // Next page button
+        if (currentPage < totalPages) {
+            const nextButton = document.createElement('a');
+            nextButton.href = '#';
+            nextButton.textContent = 'Next';
+            nextButton.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    loadData(); // Load data for the next page
+                }
+            });
+            pagination.appendChild(nextButton);
+        }
+    
+        // Create a separate div for the input
+        const jumpToPageDiv = document.createElement('div');
+        jumpToPageDiv.classList.add('jump-to-page');
+        pagination.appendChild(jumpToPageDiv);
+
+        // Label for current page input
+        const currentPageLabel = document.createElement('label');
+        currentPageLabel.textContent = 'Current Page: ';
+        jumpToPageDiv.appendChild(currentPageLabel);
+    
+        // Input for jumping to specific page
+        const currentPageInput = document.createElement('input');
+        currentPageInput.type = 'number';
+        currentPageInput.value = currentPage;
+        currentPageInput.min = 1;
+        currentPageInput.max = totalPages;
+        currentPageInput.classList.add('page-input');
+        currentPageInput.addEventListener('change', function() {
+            let page = parseInt(currentPageInput.value);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                loadData(); // Load data for the entered page
+            } else {
+                currentPageInput.value = currentPage; // Revert to current page if invalid input
+            }
+        });
+        jumpToPageDiv.appendChild(currentPageInput);
+    }
+    
+    
+  
+
+    document.getElementById('searchvalue').addEventListener('keyup', () => {
+        currentPage = 1; // Reset to first page on search
+        loadData();
+    });
+
+    window.onload = loadData;
     
