@@ -43,309 +43,215 @@
 
 
 <!-- TAB 1 - PRINTING CHEQUE SECTION -->
-<div id="tab1" class="tab-content active">
-<div class="cheque_container">
-    <h2>Cheque Information:</h2>
 
-    <form id="chequeForm">
-    <div class="form-group">
-        <label for="dvNumber">DV Number:</label>
-        <input type="text" id="dvNumberInput" name="dvNumber" required>
-    </div>  
-    <div class="form-group">
-        <label for="accountNumber">Account Number:</label>
-        <input type="text" id="accountNumberInput" name="accountNumber" readonly required>
-    </div>
-    <div class="form-group">
-        <label for="checkNumber">Check Number:</label>
-        <input type="text" id="checkNumberInput" name="checkNumber" readonly required>
-    </div>
-    <div class="form-group">
-        <label for="payee">Payee:</label>
-        <input type="text" id="payeeInput" name="payee" required>
-    </div>
-    <div class="form-group">
-        <label for="amount">Amount:</label>
-        <input type="number" id="amountInput" name="amount" step="0.01" readonly required>
-    </div>
-    <div class="form-group">
-        <label for="amountWords">Amount (<i>in words</i>):</label>
-        <input type="text" id="amountWordsInput" name="amountWords" readonly required>
-    </div>
-    <div class="form-group">
-        <label for="chequeDate">Date:</label>
-        <input type="date" id="chequeDateInput" name="chequeDate" readonly required>
-    </div>
-    <button type="submit" class="styled-button" onclick="save_and_print()">Print and save</button>
-    <button type="submit" class="styled-button" onclick="save_only()">Save only</button>
-    </form>
+    <div id="tab1" class="tab-content active">
+    <div class="cheque_container">
+        <h2>Cheque Information:</h2>
 
-    <!-- SNACKBAR || TOAST NOTIF -->
-    <!-- The actual snackbar -->
-    <div id="snackbar">Data has been saved</div>
+        <form id="chequeForm">
+        <div class="form-group">
+            <label for="dvNumber">DV Number:</label>
+            <input type="text" id="dvNumberInput" name="dvNumber" required>
+        </div>  
+        <div class="form-group">
+            <label for="accountNumber">Account Number:</label>
+            <input type="text" id="accountNumberInput" name="accountNumber" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="checkNumber">Check Number:</label>
+            <input type="text" id="checkNumberInput" name="checkNumber" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="payee">Payee:</label>
+            <input type="text" id="payeeInput" name="payee" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amountInput" name="amount" step="0.01" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="amountWords">Amount (<i>in words</i>):</label>
+            <input type="text" id="amountWordsInput" name="amountWords" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="chequeDate">Date:</label>
+            <input type="date" id="chequeDateInput" name="chequeDate" readonly required>
+        </div>
+        <button type="submit" class="styled-button" onclick="save_and_print()">Print and save</button>
+        <button type="submit" class="styled-button" onclick="save_only()">Save only</button>
+        </form>
 
-    <div id="responseMessage" style="display:none;"></div>
+        <!-- SNACKBAR || TOAST NOTIF -->
+        <!-- The actual snackbar -->
+        <div id="snackbar">Data has been saved</div>
 
-    <h2>Cheque Preview:</h2>
-    <div id="cheque">
-        <div class="cheque-field" id="accountNumber"></div>
-        <div class="cheque-field" id="payee"></div>
-        <div class="cheque-field" id="amount"></div>
-        <div class="cheque-field" id="amountWords"></div>
-        <div class="cheque-field" id="chequeDate"></div>
-        <div class="cheque-field" id="dvNumber"></div>
-        <div class="cheque-field" id="checkNumber"></div>
+        <div id="responseMessage" style="display:none;"></div>
+
+        <h2>Cheque Preview:</h2>
+        <div id="cheque">
+            <div class="cheque-field" id="accountNumber"></div>
+            <div class="cheque-field" id="payee"></div>
+            <div class="cheque-field" id="amount"></div>
+            <div class="cheque-field" id="amountWords"></div>
+            <div class="cheque-field" id="chequeDate"></div>
+            <div class="cheque-field" id="dvNumber"></div>
+            <div class="cheque-field" id="checkNumber"></div>
+        </div>
     </div>
-</div>
-</div>
-
-
-
-<!-- TAB 2 - HISTORY SECTION -->
-<div id="tab2" class="tab-content">
-    <div class="history_container">
-        <h2>Logs</h2>
-        <div class="search">
-            <!-- <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()"> -->
-            <button class="searchbutton">
-                <svg class="searchicon" aria-hidden="true" viewBox="0 0 24 24">
-                    <g>
-                        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-                    </g>
-                </svg>
-            </button>
         </div>
 
 
-        <?php
-        require "database.php";     
 
-        // // Pagination variables
-        // // Number of items per page
-        // $itemsPerPage = 10; 
-        // // Get current page number
-        // $currentpage = isset($_GET['page']) ? $_GET['page'] : 1; 
-        // // Calculate starting index for the slice
-        // $start = ($currentpage - 1) * $itemsPerPage; 
+    <!-- TAB 2 - HISTORY SECTION -->
+    <div id="tab2" class="tab-content">
+        <div class="history_container">
+                <h2>Logs</h2>
 
-        // Include the database connection
-        // Fetch data from the database
-        $sql = "
-        
-        SELECT check_id, check_number, payee, amount, date, dv_number, account_number
-        FROM tbcheckrecords 
-        ORDER BY check_id DESC
-        
-        
-        ";
-        $result = $conn->query($sql);
-        
+                <div class="history-table-header">
 
-        echo "
-        <div class=\"container-table\">
-            <div class=\"table-wrapper\">
-                <table id=\"scrollable-table\">
-                <thead>
-                    <tr>
-                        <th>Cheque Number</th>
-                        <th>Payee</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>DV Number</th>
-                        <th>Account Number</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>";
                 
-                require_once('reprint.php');
+                    <!-- Filter options -->
+                    <div class="filter">
+                        <label for="entries">Show entries:</label>
+                        <select id="entries" onchange="updateEntries()">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
 
-                if ($result->num_rows > 0) {
-                    // Output data of each row
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr id='record-" . $row["check_id"] . "'>";
-                        echo "<td>" . $row["check_number"] . "</td>";
-                        echo "<td>" . $row["payee"] . "</td>";
-                        echo "<td>" . $row["amount"] . "</td>";
-                        $date = new DateTime($row["date"]);
-                        echo "<td>" . $date->format('m/d/Y') . "</td>";
-                        echo "<td>" . $row["dv_number"] . "</td>";
-                        echo "<td>" . $row["account_number"] . "</td>";
-                        echo "<td class='action-btn-container'>";
+                    <!-- Search bar -->
+                    <div class="search">
+                        <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()">
+                        <button class="searchbutton">
+                            <svg class="searchicon" aria-hidden="true" viewBox="0 0 24 24">
+                                <g>
+                                    <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
 
-                        
-                        echo '<div hidden id="cheque">';
-                            echo '<div id=' . $row["check_id"] . '>';
-                                echo '<div class="cheque-field" id="accountNumber">' . $row["account_number"] . '</div>';
-                                echo '<div class="cheque-field" id="payee">'. $row["payee"] . '</div>';
-                                echo '<div class="cheque-field" id="amount">' . number_format($row["amount"], 2) . '</div>';
-                                echo '<div class="cheque-field" id="amountWords">';
-                                //amount to words
-                                echo amountToWords($row["amount"]);
-                                echo '</div>';
-                                echo '<div class="cheque-field" id="chequeDate">' . $date->format('m d Y') . '</div>';
-                                echo '<div class="cheque-field" id="dvNumber">' . $row["dv_number"] . '</div>';
-                                echo '<div class="cheque-field" id="checkNumber">' . $row["check_number"] . '</div>';
-                            echo '</div>';
-                        echo '</div>';
-
-                        // REPRINT
-                        echo "<button class='action-button-green' onclick='printchequeHistory(" . $row["check_id"] . ")'>Reprint</button>";
-
-                        echo "<button class='action-button-red' onclick='deleteRecord(" . $row["check_id"] . ")'>Delete</button>";
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7'>No records found</td></tr>";
-                }
-
-                // // Pagination links
-                // $sql = "SELECT COUNT(*) AS total FROM tbcheckrecords";
-                // $result = $conn->query($sql);
-                // $row = $result->fetch_assoc();
-                // $totalItems = $row['total'];
-                // $totalPages = ceil($totalItems / $itemsPerPage);
-
-                // echo "<div class='pagination'>";
-                // for ($page = 1; $page <= $totalPages; $page++) {
-                //     echo "<a href='?page=$page' ";
-                //     if ($page == $currentpage) echo "class='active'";
-                //     echo ">$page</a>";
-                // }
-                // echo "</div>";
-
-                // Close the database connection
-                $conn->close();
-                ?>
-                
-                    
-                </tbody>
-                </table>
-            </div>
-        </div>
-
-
-        <!-- TESTING TABLE -->
+                </div>
             
 
-            <div class="history_container">
-        <h2>Logs</h2>
-        <div class="search">
-            <input type="text" class="searchinput" placeholder="Type your text" id="searchvalue" onkeyup="searching()">
-            <button class="searchbutton">
-                <svg class="searchicon" aria-hidden="true" viewBox="0 0 24 24">
-                    <g>
-                        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-                    </g>
-                </svg>
-            </button>
+                    <!-- Data table -->
+                    <div class="container-table">
+                        <div class="table-wrapper">
+                            <table id="scrollable-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cheque Number</th>
+                                        <th>Payee</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>DV Number</th>
+                                        <th>Account Number</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <!-- Data will be loaded here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                        <div class="history-table-footer">
+                            <!-- Pagination -->
+                            <div class="pagination" id="pagination">
+                                <a href="#" id="prev-page">Previous</a>
+                                <span id="page-numbers"></span>
+                                <a href="#" id="next-page">Next</a>
+                                <!-- <input type="number" id="page-input" min="1" max="" placeholder="Page"> -->
+                            </div>
+
+                            <!-- Jump to page input -->
+                            <!-- <div class="jump-to-page">
+                                Jump to page number: <input type="number" id="page-input" min="1" max="" placeholder="Page">
+                            </div> -->
+
+                            <!-- Showing entries count -->
+                            <div class="entries-count" id="entries-count">
+                                Showing <span id="start-entry"></span> to <span id="end-entry"></span> of <span id="total-entries"></span> entries
+                            </div>
+                        </div>
+                </div>
         </div>
-        <div class="filter">
-            <label for="entries">Show entries:</label>
-            <select id="entries" onchange="updateEntries()">
-                <option value="5">5</option>
-                <option value="10" selected>10</option>
-                <option value="15">15</option>
-                <option value="all">All</option>
-            </select>
+
+
+
+        <!-- TAB 3 - SUMMARY SECTION -->
+    <div id="tab3" class="tab-content">
+        <div class="summary_container">
+            <h2>Summary Report</h2>
+
+            <div class="calendar-container">
+            <table class="calendar">
+                <thead>
+                    <tr class="calendar-header">
+                        <th colspan="7">
+                            <button onclick="prevMonth()">&#10094;</button>
+                            <span id="monthYear"></span>
+                            <button onclick="nextMonth()">&#10095;</button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Calendar body will be dynamically generated -->
+                </tbody>
+            </table>
+            <div class="summary">
+                <h3>Summary for <span id="summaryMonth"></span></h3>
+                <p>Monthly Total: <span id="monthlyTotal">0</span></p>
+                <h3>Annual Summary for <span id="summaryYear"></span></h3>
+                <p>Total: <span id="annualTotal">0</span></p>
+            </div>  
+
         </div>
-        <div class="container-table">
-            <div class="table-wrapper">
-                <table id="scrollable-table">
+        
+        <div id="tblreport">
+                <h3>Monthly and Annual Report</h3>
+                <table id="reportTable">
                     <thead>
                         <tr>
-                            <th>Cheque Number</th>
-                            <th>Payee</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>DV Number</th>
-                            <th>Account Number</th>
-                            <th>Actions</th>
+                            <th>Month</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody id="table-body">
-                        <!-- Data will be loaded here dynamically -->
+                    
+                    <tbody id="reportBody">
+                        <!-- Report body will be dynamically generated -->
                     </tbody>
+
+                    <thead>
+                        <tr>
+                            <th>Annual</th>
+                            <th><span id="annualTotal2">0</span></th>
+                        </tr>
+                    </thead>
                 </table>
-                <div class="pagination" id="pagination">
-                    <!-- Pagination links will be loaded here dynamically -->
-                </div>
             </div>
         </div>
-        </div>
-        
 
-        
-
+        <button id="printreport-btn" onclick="printReport()">Print Report</button>
     </div>
 </div>
 
 
-<!-- TAB 3 - SUMMARY SECTION -->
-<div id="tab3" class="tab-content">
-    <div class="summary_container">
-        <h2>Summary Report</h2>
 
-        <div class="calendar-container">
-        <table class="calendar">
-            <thead>
-                <tr class="calendar-header">
-                    <th colspan="7">
-                        <button onclick="prevMonth()">&#10094;</button>
-                        <span id="monthYear"></span>
-                        <button onclick="nextMonth()">&#10095;</button>
-                    </th>
-                </tr>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendarBody">
-                <!-- Calendar body will be dynamically generated -->
-            </tbody>
-        </table>
-        <div class="summary">
-            <h3>Summary for <span id="summaryMonth"></span></h3>
-            <p>Monthly Total: <span id="monthlyTotal">0</span></p>
-            <h3>Annual Summary for <span id="summaryYear"></span></h3>
-            <p>Total: <span id="annualTotal">0</span></p>
-        </div>  
-
-    </div>
-     
-    <div id="tblreport">
-            <h3>Monthly and Annual Report</h3>
-            <table id="reportTable">
-                <thead>
-                    <tr>
-                        <th>Month</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                
-                <tbody id="reportBody">
-                    <!-- Report body will be dynamically generated -->
-                </tbody>
-
-                <thead>
-                    <tr>
-                        <th>Annual</th>
-                        <th><span id="annualTotal2">0</span></th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
-
-    <button id="printreport-btn" onclick="printReport()">Print Report</button>
-</div>
 
 <script src="script.js"></script>
 

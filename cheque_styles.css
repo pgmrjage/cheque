@@ -630,18 +630,16 @@ tr:hover {
 
     .pagination a {
     color: black;
-    float: left;
+    /* float: left; */
     padding: 8px 16px;
     text-decoration: none;
     transition: background-color .3s;
-    position: sticky; /* Fix the header */
-        top: 0; /* Position the header at the top */
-        background: #fff; /* Optional: background color for header */
-        z-index: 2; /* Ensure header is above the body rows */
+    background: #fff; /* Optional: background color for header */
+    z-index: 2; /* Ensure header is above the body rows */
   }
   
   /* Style the active/current link */
-    .pagination a.active {
+    .pagination a.current-page {
     background-color: dodgerblue;
     color: white;
   }
@@ -650,120 +648,37 @@ tr:hover {
     .pagination a:hover:not(.active) {background-color: #ddd;}
 
 
-
-
-
-
+    .pagination, .jump-to-page {
+        padding: 8px 16px;
+        margin-top: 7px;
+    }
 
 
     /* CSS FOR TESTING TABLE */
-    .card-body {
-        display: grid;
-        padding: 0 20px 20px 20px;
-
-      }
-
-
-
-    .datatable-top,
-    .datatable-bottom {
-        padding: 8px 10px;
+    .history-table-header, .history-table-footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
     }
 
-    .datatable-top > nav:first-child,
-    .datatable-top > div:first-child,
-    .datatable-bottom > nav:first-child,
-    .datatable-bottom > div:first-child {
-        float: left;
+    .page-input, input.placeholder {
+        text-align: center;
     }
 
-    .datatable-top > nav:last-child,
-    .datatable-top > div:not(first-child),
-    .datatable-bottom > nav:last-child,
-    .datatable-bottom > div:last-child {
-        float: right;
+    .page-input {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 16px;
+        font-family: "Poppins";
+        margin-left: 7px;
     }
 
-    .datatable-top::after, .datatable-bottom::after {
-        clear: both;
-        content: " ";
-        display: table;
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
     }
 
 
-    /* Filter dropdown */
-.dashboard .filter {
-    position: absolute;
-    right: 0px;
-    top: 15px;
-  }
-  
-  .dashboard .filter .icon {
-    color: #aab7cf;
-    padding-right: 20px;
-    padding-bottom: 5px;
-    transition: 0.3s;
-    font-size: 16px;
-  }
-  
-  .dashboard .filter .icon:hover,
-  .dashboard .filter .icon:focus {
-    color: #4154f1;
-  }
-  
-  .dashboard .filter .dropdown-header {
-    padding: 8px 15px;
-  }
-  
-  .dashboard .filter .dropdown-header h6 {
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: #aab7cf;
-    margin-bottom: 0;
-    padding: 0;
-  }
-  
-  .dashboard .filter .dropdown-item {
-    padding: 8px 15px;
-  }
 
-
-  .card {
-    margin-bottom: 30px;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
-  }
-  
-  .card-header,
-  .card-footer {
-    border-color: #ebeef4;
-    background-color: #fff;
-    color: #798eb3;
-    padding: 15px;
-  }
-  
-  .card-title {
-    padding: 20px 0 15px 0;
-    font-size: 22px;
-    font-weight: 500;
-    color: #333;
-    font-family: "Poppins", sans-serif;
-  }
-  
-  .card-title span {
-    color: #899bbd;
-    font-size: 14px;
-    font-weight: 400;
-  }
-  
-  .card-body {
-    display: grid;
-    padding: 0 20px 20px 20px;
-  }
-  
-  .card-img-overlay {
-    background-color: rgba(255, 255, 255, 0.6);
-  }

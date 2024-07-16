@@ -2,7 +2,7 @@
 require "database.php";
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-$entries = isset($_GET['entries']) ? $_GET['entries'] : 10;
+$entries = isset($_GET['entries']) ? $_GET['entries'] : 5;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Ensure $entries is an integer or 'all'
