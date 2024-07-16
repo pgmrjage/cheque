@@ -666,10 +666,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 var response = JSON.parse(xhr.responseText);
                 if (response.success) {
                     
-                    document.getElementById('accountNumberInput').value = response.data.AA_NO;
+                    document.getElementById('accountNumberInput').value = response.data.BANK_ACCTNO;
                     document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
                     document.getElementById('payeeInput').value = response.data.PAYEE.toUpperCase();
                     document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
+                    response.data.BANK === "DBP" ? document.getElementById('cheque').style.backgroundImage = "url(DBPcheque.jpg)" : document.getElementById('cheque').style.backgroundImage = "url(chequetemplate.jpg)";
                     //document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
                     updateAmountInWords();
                     setCurrentDate();
