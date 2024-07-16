@@ -76,8 +76,8 @@
         <label for="chequeDate">Date:</label>
         <input type="date" id="chequeDateInput" name="chequeDate" readonly required>
     </div>
-    <button type="submit" class="styled-button" onclick="save_and_print()">Print and save</button>
-    <button type="submit" class="styled-button" onclick="save_only()">Save only</button>
+    <button type="submit" class="styled-button" onclick="save_and_print()">Print</button>
+    <!-- <button type="submit" class="styled-button" onclick="save_only()">Save only</button> -->
     </form>
 
     <!-- SNACKBAR || TOAST NOTIF -->

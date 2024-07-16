@@ -670,6 +670,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
                     document.getElementById('payeeInput').value = response.data.PAYEE.toUpperCase();
                     document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
+                    response.data.BANK === "DBP" ? document.getElementById('cheque').style.backgroundImage = "url(DBPcheque.jpg)" : document.getElementById('cheque').style.backgroundImage = "url(chequetemplate.jpg)";
                     //document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
                     updateAmountInWords();
                     setCurrentDate();
