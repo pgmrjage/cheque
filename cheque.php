@@ -53,6 +53,17 @@
             <label for="dvNumber">DV Number:</label>
             <input type="text" id="dvNumberInput" name="dvNumber" required>
         </div>  
+
+        <!--  -->
+        <div class="form-group">
+            <label for="accountCode">Account Code</label>
+            <select name="accountCode" id="accountCodeInput" onchange="toggleNewAccountInput()">
+                <option value = "addNew">Add New Account Number</option>
+                <?php echo $options; ?>
+            </select>
+        </div>
+
+
         <div class="form-group">
             <label for="accountNumber">Account Number:</label>
             <input type="text" id="accountNumberInput" name="accountNumber" readonly required>
@@ -223,7 +234,7 @@
         </div>
         
         <div id="tblreport">
-                <h3>Monthly and Annual Report</h3>
+                <h3>Monthly and Annual Printed Cheque Report</h3>
                 <table id="reportTable">
                     <thead>
                         <tr>
