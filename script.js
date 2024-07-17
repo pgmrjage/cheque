@@ -82,82 +82,84 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
-
-
-
-
+// Function to convert a number to words
 function numberToWords(num) {
-        const belowTwenty = [
-            'Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
-            'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
-        ];
-        const tens = [
-            '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
-        ];
-        const thousands = [
-            '', 'Thousand', 'Million', 'Billion', 'Trillion', 'Quadrillion', 'Quintillion'
-        ];
+    const belowTwenty = [
+        'Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+        'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+    ];
+    const tens = [
+        '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+    ];
+    const thousands = [
+        '', 'Thousand', 'Million', 'Billion', 'Trillion', 'Quadrillion', 'Quintillion'
+    ];
 
-        if (num === 0) return 'Zero';
-        if (num < 0) return 'Negative ' + numberToWords(Math.abs(num));
+    if (num === 0) return 'Zero';
+    if (num < 0) return 'Negative ' + numberToWords(Math.abs(num));
 
-        let word = '';
-        let i = 0;
+    let word = '';
+    let i = 0;
 
-        while (num > 0) {
-            if (num % 1000 !== 0) {
-                word = helper(num % 1000) + thousands[i] + ' ' + word;
-            }
-            num = Math.floor(num / 1000);
-            i++;
+    while (num > 0) {
+        if (num % 1000 !== 0) {
+            word = helper(num % 1000) + thousands[i] + ' ' + word;
         }
-
-        return word.trim();
+        num = Math.floor(num / 1000);
+        i++;
     }
 
-    function helper(num) {
-        const belowTwenty = [
-            '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
-            'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
-        ];
-        const tens = [
-            '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
-        ];
+    return word.trim();
+}
 
-        let word = '';
+// Helper function to convert a number to words
+function helper(num) {
+    const belowTwenty = [
+        '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+        'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+    ];
+    const tens = [
+        '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+    ];
 
-        if (num < 20) {
-            word = belowTwenty[num] + ' ';
-        } else if (num < 100) {
-            word = tens[Math.floor(num / 10)] + ' ' + belowTwenty[num % 10] + ' ';
-        } else {
-            word = belowTwenty[Math.floor(num / 100)] + ' Hundred ' + helper(num % 100);
-        }
+    let word = '';
 
-        return word.trim() + ' ';
+    if (num < 20) {
+        word = belowTwenty[num] + ' ';
+    } else if (num < 100) {
+        word = tens[Math.floor(num / 10)] + ' ' + belowTwenty[num % 10] + ' ';
+    } else {
+        word = belowTwenty[Math.floor(num / 100)] + ' Hundred ' + helper(num % 100);
     }
 
-    function updateAmountInWords() {
-        const amountInput = document.getElementById('amountInput').value;
-        const amountWordsInput = document.getElementById('amountWordsInput');
+    return word.trim() + ' ';
+}
 
-        if (amountInput) {
-            const parts = amountInput.split('.');
-            const pesos = parseInt(parts[0]);
-            const cents = parts[1] ? parseInt(parts[1]) : 0;
+// Function to convert amount (pesos and centavos) to words
+function amountToWords(amount) {
+    const parts = amount.split('.');
+    const pesos = parseInt(parts[0]);
+    const cents = parts[1] ? parseInt(parts[1]) : 0;
 
-            let words = numberToWords(pesos) + ' Pesos'; 
-            if (cents > 0) {
-                words += ' and ' + numberToWords(cents) + ' Centavos' + ' Only';
-            }
-
-            amountWordsInput.value = words;
-        } else {
-            amountWordsInput.value = '';
-        }
+    let words = numberToWords(pesos) + ' Pesos';
+    if (cents > 0) {
+        words += ' and ' + helper(cents) + ' Centavos Only';
     }
 
+    return words;
+}
+
+// Function to update amount in words
+function updateAmountInWords() {
+    const amountInput = document.getElementById('amountInput').value;
+    const amountWordsInput = document.getElementById('amountWordsInput');
+
+    if (amountInput) {
+        amountWordsInput.value = amountToWords(amountInput);
+    } else {
+        amountWordsInput.value = '';
+    }
+}
 
     function generateCheque() {
         var printContent = document.getElementById("cheque").innerHTML;
@@ -165,7 +167,7 @@ function numberToWords(num) {
         document.body.innerHTML = printContent;
         
         var style = document.createElement('style');
-        style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; }';
+        style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 25%; }';
         document.head.appendChild(style);
 
         window.print();
@@ -410,16 +412,18 @@ document.addEventListener('DOMContentLoaded', function () {
             location.reload();
         }
     }
-    function save_only(){
-        if(document.getElementById("amountInput").value.trim() === "")
-            alert("invalid input");
-        else
-        {
-            saveFormData();
-            sessionStorage.setItem('showSnackbar', 'true');
-            location.reload();
-        }
-    }
+
+    //ALREADY DELETE SAVE ONLY BUTTON
+    // function save_only(){
+    //     if(document.getElementById("amountInput").value.trim() === "")
+    //         alert("invalid input");
+    //     else
+    //     {
+    //         saveFormData();
+    //         sessionStorage.setItem('showSnackbar', 'true');
+    //         location.reload();
+    //     }
+    // }
     //for the snackbar after the page reloaded
     window.onload = function() {
         if (sessionStorage.getItem('showSnackbar') === 'true') {
@@ -555,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.innerHTML = printContent;
             
             var style = document.createElement('style');
-            style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; }';
+            style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 25%; }';
             document.head.appendChild(style);
     
             window.print();
@@ -563,6 +567,8 @@ document.addEventListener('DOMContentLoaded', function () {
             
             document.body.innerHTML = originalContent;
             document.head.removeChild(style);
+
+            location.reload();
     }
 
     //deleting a record
@@ -768,11 +774,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 const tbody = document.getElementById('table-body');
                 tbody.innerHTML = '';
                 data.records.forEach(record => {
+                    const formattedAmount = parseFloat(record.amount).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                    const formattedDate = record.date.replace(/\//g, ' ');
+                    const amountInWords = amountToWords(record.amount);
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${record.check_number}</td>
                         <td>${record.payee}</td>
-                        <td>${record.amount}</td>
+                        <td>${formattedAmount}</td>
                         <td>${record.date}</td>
                         <td>${record.dv_number}</td>
                         <td>${record.account_number}</td>
@@ -780,6 +792,21 @@ document.addEventListener('DOMContentLoaded', function () {
                             <button class='action-button-green' onclick='printchequeHistory(${record.check_id})'>Reprint</button>
                             <button class='action-button-red' onclick='deleteRecord(${record.check_id})'>Delete</button>
                         </td>
+                        
+                            <div hidden id="cheque">
+                                <div id="${record.check_id}">
+                                    <div class="cheque-field" id="accountNumber">${record.account_number}</div>
+                                    <div class="cheque-field" id="payee">${record.payee}</div>
+                                    <div class="cheque-field" id="amount">${formattedAmount}</div>
+                                    <div class="cheque-field" id="amountWords">\
+                                        ${amountInWords}
+                                    </div>                
+                                    <div class="cheque-field" id="chequeDate">${formattedDate}</div>
+                                    <div class="cheque-field" id="dvNumber">${record.dv_number}</div>
+                                    <div class="cheque-field" id="checkNumber">${record.check_number}</div>
+                                </div>
+                            </div>
+                        
                     `;
                     tbody.appendChild(tr);
                 });
