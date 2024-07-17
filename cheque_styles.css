@@ -82,8 +82,8 @@ body{
     font-weight: bold;
 }
 #chequeDate {
-    top: 41px;
-    left: 574px;
+    top: 45px;
+    left: 569px;
     letter-spacing: 8.5px;
 }
 #accountNumber {
@@ -91,31 +91,36 @@ body{
     left: 137px;
 }
 #amount {
-    top: 73px;
-    left: 554px;
+    top: 75px;
+    left: 550px;
 }
 #amountWords {
     top: 99px;
     left: 89px;
     width: 650px;
+    height: 25px;
     font-size: 12px;
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-}
-#payee {
-    top: 65px;
-    left: 122px;
-    width: 380px;
-    height: 28px;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 12px;
     vertical-align: middle;
     display: flex;
     align-items: center;
+    line-height: 12px;
+}
+#payee {
+    top: 70px;
+    left: 122px;
+    width: 380px;
+    height: 25px;
+    font-size: 12px;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    line-height: 12px;
 }
 #dvNumber {
     top: 220px;
