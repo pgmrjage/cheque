@@ -2,8 +2,7 @@
 require "accDB.php";
 
 $term = $_GET['term'];
-$sql = "SELECT DV_NUMBER FROM cheque_view WHERE DV_NUMBER LIKE ? LIMIT 10";
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare($select_dv_numbers);
 $searchTerm = "%".$term."%";
 $stmt->bind_param("s", $searchTerm);
 $stmt->execute();

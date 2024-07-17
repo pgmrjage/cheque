@@ -10,7 +10,7 @@ if (isset($_GET['dvNumber'])) {
     $dvNumber = $_GET['dvNumber'];
     
     // Prepare the SQL statement
-    $stmt = $conn->prepare("SELECT BANK, BANK_ACCTNO, CHECK_NUMBER, PAYEE, FINAL_AMOUNT, CHECK_DATE FROM cheque_view WHERE DV_NUMBER = ?");
+    $stmt = $conn->prepare($select_printing_details);
     $stmt->bind_param("s", $dvNumber);
     
     // Execute the statement
