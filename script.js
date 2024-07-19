@@ -821,7 +821,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div hidden id="cheque">
                                 <div id="${record.check_id}">
                                     <div class="cheque-field" id="accountNumber">${record.account_number}</div>
-                                    <div class="cheque-field" id="payee">${record.payee}</div>
+                                    <div class="cheque-field" id="payee">***${record.payee}***</div>
                                     <div class="cheque-field" id="amount">${formattedAmount}</div>
                                     <div class="cheque-field" id="amountWords">\
                                         ${amountInWords}
