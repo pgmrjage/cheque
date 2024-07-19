@@ -1,6 +1,19 @@
 <?php
     session_start();
     $username = $_SESSION['username'];
+    require "database.php";
+    $sql = "SELECT account_code FROM tbbankaccount";
+    $result = $conn->query($sql);
+
+    $options = '';
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $options .= '<option value="' . $row["account_code"] . '">' . $row["account_code"] . '</option>';
+        }
+    } else {
+        $options = '<option value="">No data found</option>';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,9 +69,9 @@
 
         <!--  -->
         <div class="form-group">
-            <label for="accountCode">Account Code</label>
-            <select name="accountCode" id="accountCodeInput" onchange="toggleNewAccountInput()">
-                <option value = "addNew">Add New Account Number</option>
+            <label for="accountCode">Account Number</label>
+            <select name="accountCode" id="accountCodeInput">
+                <option value = "default">Default</option>
                 <?php echo $options; ?>
             </select>
         </div>
@@ -70,7 +83,7 @@
         </div>
         <div class="form-group">
             <label for="checkNumber">Check Number:</label>
-            <input type="text" id="checkNumberInput" name="checkNumber" readonly required>
+            <input type="text" id="checkNumberInput" name="checkNumber" required>
         </div>
         <div class="form-group">
             <label for="payee">Payee:</label>

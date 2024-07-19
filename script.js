@@ -1,4 +1,25 @@
+let default_account_num = "";
 // TOP SCRIPT
+//account code
+$(document).ready(function(){
+    $('#accountCodeInput').change(function(){
+        var accountCode = $(this).val();
+        if(accountCode && accountCode != "default") {
+            $.ajax({
+                type: 'POST',
+                url: 'fetch_account_number.php',
+                data: {accountCode: accountCode},
+                success: function(response){
+                    $('#accountNumberInput').val(response);
+                    updateCheque();
+                }
+            });
+        } else {
+            $('#accountNumberInput').val(default_account_num);
+        }
+        
+    });
+});
 //payee start
 $(function() {
     $("#dvNumberInput").autocomplete({
@@ -674,6 +695,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.success) {
                     
                     document.getElementById('accountNumberInput').value = response.data.BANK_ACCTNO;
+                    default_account_num = response.data.BANK_ACCTNO;
                     document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
                     document.getElementById('payeeInput').value = response.data.PAYEE.toUpperCase();
                     document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
