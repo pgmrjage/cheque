@@ -559,7 +559,9 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.innerHTML = printContent;
             
             var style = document.createElement('style');
-            style.innerHTML = '@page { size: landscape; margin-top: 245px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 27%; scale: 75%; }';
+            style.innerHTML = '@page { size: landscape; margin-top: 245px; margin-left: 290px; }';
+            //style.innerHTML = '@page { size: landscape; margin-top: 245px; margin-right: 0; margin-left: 300px; scale: 102 }';
+            //style.innerHTML = '@page { size: landscape; margin-top: 245px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 27%; scale: 75%; }';
             // style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 25%; }';
             document.head.appendChild(style);
     
