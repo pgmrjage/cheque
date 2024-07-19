@@ -1,5 +1,5 @@
 let default_account_num = "";
-// TOP SCRIPT
+
 //account code
 $(document).ready(function(){
     $('#accountCodeInput').change(function(){
@@ -59,14 +59,9 @@ $("#chequeForm").submit(function(event) {
 //payee end
 
 
-//dv num and cheque num history
 
 
-
-
-// BOTTOM SCRIPT
-
-
+// Function to Open Tabs
 function openTab(evt, tabName) {
     // Get all elements with class="tab-content" and hide them
     
@@ -133,6 +128,7 @@ function numberToWords(num) {
     return word.trim();
 }
 
+
 // Helper function to convert a number to words
 function helper(num) {
     const belowTwenty = [
@@ -163,7 +159,9 @@ function amountToWords(amount) {
     const cents = parts[1] ? parseInt(parts[1]) : 0;
 
     let words = numberToWords(pesos) + ' Pesos';
-    if (cents > 0) {
+    if (cents <= 0){
+        words += helper(cents) + ' Only';
+    }else if (cents > 0){
         words += ' and ' + helper(cents) + ' Centavos Only';
     }
 
@@ -238,92 +236,91 @@ function updateAmountInWords() {
     
 
 
-    // JS FOR SUMMARY
-    // ===================================
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    let events = {}; // Object to store events, keyed by date string
+// JS FOR SUMMARY TAB
+// ======================================================================
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let events = {}; // Object to store events, keyed by date string
 
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchEvents();
-    });
-    
-    function fetchEvents() {
-        fetch('getEvents.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error fetching events:', data.error);
-                    return;
-                }
-                events = {};
-                for (let key in data) {
-                    let date = key.split(' ')[0]; // Get the date part only
-                    events[date] = data[key];
-                }
-                console.log(events);
-                generateCalendar(currentMonth, currentYear);
-            })
-            .catch(error => console.error('Fetch error:', error));
-            
-    }
-    
-    function generateCalendar(month, year) {
-        const firstDay = (new Date(year, month)).getDay();
-        const daysInMonth = 32 - new Date(year, month, 32).getDate();
-        const tbl = document.getElementById("calendarBody");
-    
-        tbl.innerHTML = "";
-    
-        let date = 1;
-        for (let i = 0; i < 6; i++) {
-            let row = document.createElement("tr");
-    
-            for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay) {
-                    let cell = document.createElement("td");
-                    let cellText = document.createTextNode("");
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                } else if (date > daysInMonth) {
-                    break;
-                } else {
-                    let cell = document.createElement("td");
-                // Ensure date format matches YYYY-MM-DD
-                    let formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
-                    cell.setAttribute('data-date', formattedDate);
-                    //cell.addEventListener('click', () => addEvent(cell));
-                    let cellText = document.createTextNode(date);
-                    cell.appendChild(cellText);
-    
-                    let eventCount = events[formattedDate];
-                    if (eventCount > 0) {
-                        let eventBadge = document.createElement("span");
-                        eventBadge.className = "event";
-                        eventBadge.textContent = ` (${eventCount})`;
-                        cell.appendChild(eventBadge);
-                    }
-    
-                    if (date === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) {
-                        cell.classList.add("today");
-                    }
-                    row.appendChild(cell);
-                    date++;
-                }
+document.addEventListener('DOMContentLoaded', () => {
+    fetchEvents();
+});
+
+function fetchEvents() {
+    fetch('getEvents.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error fetching events:', data.error);
+                return;
             }
-            tbl.appendChild(row);
+            events = {};
+            for (let key in data) {
+                let date = key.split(' ')[0]; // Get the date part only
+                events[date] = data[key];
+            }
+            console.log(events);
+            generateCalendar(currentMonth, currentYear);
+        })
+        .catch(error => console.error('Fetch error:', error));
+        
+}
+
+function generateCalendar(month, year) {
+    const firstDay = (new Date(year, month)).getDay();
+    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+    const tbl = document.getElementById("calendarBody");
+
+    tbl.innerHTML = "";
+
+    let date = 1;
+    for (let i = 0; i < 6; i++) {
+        let row = document.createElement("tr");
+
+        for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+                let cell = document.createElement("td");
+                let cellText = document.createTextNode("");
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            } else if (date > daysInMonth) {
+                break;
+            } else {
+                let cell = document.createElement("td");
+            // Ensure date format matches YYYY-MM-DD
+                let formattedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+                cell.setAttribute('data-date', formattedDate);
+                //cell.addEventListener('click', () => addEvent(cell));
+                let cellText = document.createTextNode(date);
+                cell.appendChild(cellText);
+
+                let eventCount = events[formattedDate];
+                if (eventCount > 0) {
+                    let eventBadge = document.createElement("span");
+                    eventBadge.className = "event";
+                    eventBadge.textContent = ` (${eventCount})`;
+                    cell.appendChild(eventBadge);
+                }
+
+                if (date === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) {
+                    cell.classList.add("today");
+                }
+                row.appendChild(cell);
+                date++;
+            }
         }
-    
-        document.getElementById("monthYear").innerText = `${monthNames[month]} ${year}`;
-        document.getElementById("summaryMonth").innerText = `${monthNames[month]} ${year}`;
-        document.getElementById("summaryYear").innerText = `${year}`;
-        updateSummary(month, year);
-        updateReportTable(year);
+        tbl.appendChild(row);
     }
+
+    document.getElementById("monthYear").innerText = `${monthNames[month]} ${year}`;
+    document.getElementById("summaryMonth").innerText = `${monthNames[month]} ${year}`;
+    document.getElementById("summaryYear").innerText = `${year}`;
+    updateSummary(month, year);
+    updateReportTable(year);
+}
 
  
-
 function updateSummary(month, year) {
     let monthlyTotal = 0;
     let annualTotal = 0;
@@ -383,604 +380,477 @@ function nextMonth() {
 document.addEventListener('DOMContentLoaded', function () {
     generateCalendar(currentMonth, currentYear);
 });
+// ======================================================================
 
 
 
 
-    // ajax for saving form
-    
-    function saveFormData() {
-        var form = document.getElementById('chequeForm');
-        var formData = new FormData(form);
-    
-        // Create an XMLHttpRequest object
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "submit_cheque.php", true);
-    
-        // Define a callback function to handle the response
-        xhr.onload = function () {
-            var responseMessage = document.getElementById('responseMessage');
-            if (xhr.status === 200) {
-                responseMessage.innerHTML = xhr.responseText;
-                responseMessage.style.display = 'block';
-                responseMessage.style.color = 'green';
-            } else {
-                responseMessage.innerHTML = 'An error occurred!';
-                responseMessage.style.display = 'block';
-                responseMessage.style.color = 'red';
-            }
-            
-            // Hide the message after 3 seconds
-            setTimeout(function() {
-                responseMessage.style.display = 'none';
-            }, 300000);
-        };
-    
-        // Send the form data
-        xhr.send(formData);
-    }
+// Function for Saving Form
+// ajax for saving form
 
+function saveFormData() {
+    var form = document.getElementById('chequeForm');
+    var formData = new FormData(form);
 
-    function save_and_print(){
-        if(document.getElementById("amountInput").value.trim() === "")
-            alert("invalid input");
-        else
-        {
-            saveFormData();
-            generateCheque();  
-            // Save the state to session storage
-            sessionStorage.setItem('showSnackbar', 'true');
-            location.reload();
+    // Create an XMLHttpRequest object
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "submit_cheque.php", true);
+
+    // Define a callback function to handle the response
+    xhr.onload = function () {
+        var responseMessage = document.getElementById('responseMessage');
+        if (xhr.status === 200) {
+            responseMessage.innerHTML = xhr.responseText;
+            responseMessage.style.display = 'block';
+            responseMessage.style.color = 'green';
+        } else {
+            responseMessage.innerHTML = 'An error occurred!';
+            responseMessage.style.display = 'block';
+            responseMessage.style.color = 'red';
         }
-    }
-
-    //ALREADY DELETE SAVE ONLY BUTTON
-    // function save_only(){
-    //     if(document.getElementById("amountInput").value.trim() === "")
-    //         alert("invalid input");
-    //     else
-    //     {
-    //         saveFormData();
-    //         sessionStorage.setItem('showSnackbar', 'true');
-    //         location.reload();
-    //     }
-    // }
-    //for the snackbar after the page reloaded
-    window.onload = function() {
-        if (sessionStorage.getItem('showSnackbar') === 'true') {
-            var x = document.getElementById("snackbar");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-            // Clear the session storage flag
-            sessionStorage.removeItem('showSnackbar');
-        }
+        
+        // Hide the message after 3 seconds
+        setTimeout(function() {
+            responseMessage.style.display = 'none';
+        }, 300000);
     };
+
+    // Send the form data
+    xhr.send(formData);
+}
+
+
+// Function for Save and Print
+function save_and_print(){
+    if(document.getElementById("amountInput").value.trim() === "")
+        alert("invalid input");
+    else
+    {
+        saveFormData();
+        generateCheque();  
+        // Save the state to session storage
+        sessionStorage.setItem('showSnackbar', 'true');
+        location.reload();
+    }
+}
+
+    
+//for the snackbar after the page reloaded
+window.onload = function() {
+    if (sessionStorage.getItem('showSnackbar') === 'true') {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        // Clear the session storage flag
+        sessionStorage.removeItem('showSnackbar');
+    }
+};
         
 
 
 
-    // JS FOR ADDING NEW ACCOUNT NUMBER
-    // =============================================
+// JS FOR SEARCH BOX
+function searching(){
+    // Declare variables
+    var input, filter, table, tr,td, i, txtValue;
+    input = document.getElementById("searchvalue");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("scrollable-table");
+    tr = table.getElementsByTagName("tr");
 
-
-
-
-
-
-    // JS FOR SEARCH BOX
-    // =============================================
-    // =============================================
-    function searching(){
-        // Declare variables
-        var input, filter, table, tr,td, i, txtValue;
-        input = document.getElementById("searchvalue");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("scrollable-table");
-        tr = table.getElementsByTagName("tr");
-
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i=1; i<tr.length; i++){
-            td = tr[i].getElementsByTagName("td");
-            tr[i].style.display = "none";
-            for (j=0; j<td.length; j++)
-                {
-                    if (td[j]){
-                        txtValue = td[j].textContent || td[j].innerText
-                        if (txtValue.toUpperCase().indexOf(filter) > -1){
-                            tr[i].style.display = "";  
-                            break;
-                        }
-                    }
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i=1; i<tr.length; i++){
+        td = tr[i].getElementsByTagName("td");
+        tr[i].style.display = "none";
+        for (j=0; j<td.length; j++)
+        {
+            if (td[j]){
+                txtValue = td[j].textContent || td[j].innerText
+                if (txtValue.toUpperCase().indexOf(filter) > -1){
+                    tr[i].style.display = "";  
+                    break;
                 }
-        }
-
-        // FOR REFERENCE USE
-        // for (i = 1; i < tr.length; i++) {
-        //     td = tr[i].getElementsByTagName("td");
-        //     tr[i].style.display = "none";
-        //     // Only check the text content of the first and second td (index 0 and 1)
-        //     for (var j = 0; j < 2; j++) {
-        //         txtValue = td[j].textContent || td[j].innerText;
-        //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //             tr[i].style.display = "";
-        //             break;
-        //         }
-        //     }
-        // }
-
-    }
-    
-
-
-
-
-    // JS FOR SUMMARY PRINT REPORT
-    function printReport(){
-        var printContent = document.getElementById("tblreport").innerHTML;
-        var originalContent = document.body.innerHTML;
-        document.body.innerHTML = printContent;
-
-        var style = document.createElement('style');
-        style.innerHTML = '@page { size: portrait; max-width: 75%; height: auto; margin: 50px;  }';
-        document.head.appendChild(style);
-
-        window.print();
-        
-        
-        document.body.innerHTML = originalContent;
-        document.head.removeChild(style);
-    }
-
-
-
-
-    // JS FOR SET CURRENT OR DEFAULT DATE
-    // document.addEventListener('DOMContentLoaded', (event) => {
-    //     const dateInput = document.getElementById('chequeDateInput');
-    //     const today = new Date().toISOString().split('T')[0];
-    //     dateInput.value = today;
-    // });
-
-        function setCurrentDate() {
-        const dateInput = document.getElementById('chequeDateInput');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-    }
-
-
-
-
-
-    // JS FOR PRINT AGAIN BUTTON IN HISTORY TAB
-    //function printchequeHistory(checkNumber) {
-        // $.ajax({
-        //     url: 'reprint.php',
-        //     type: 'POST',
-        //     data: { check_number: checkNumber },
-        //     success: function(response) {
-        //         var chequeData = JSON.parse(response);
-
-        //         document.getElementById('accountNumber').innerText = chequeData.account_code;
-        //         document.getElementById('payee').innerText = chequeData.payee;
-        //         document.getElementById('amount').innerText = chequeData.amount;
-        //         document.getElementById('amountWords').innerText = chequeData.amount_words; // Assuming you have the amount in words
-        //         document.getElementById('chequeDate').innerText = chequeData.date;
-        //         document.getElementById('dvNumber').innerText = chequeData.dv_number;
-        //         document.getElementById('checkNumber').innerText = chequeData.check_number;
-
-                
-        //     }
-        // });
-        // generateCheque();
-
-        function printchequeHistory(chequeNum) {
-            var content = document.getElementById(chequeNum);
-            var printContent = content.innerHTML;
-            var originalContent = document.body.innerHTML;
-            document.body.innerHTML = printContent;
-            
-            var style = document.createElement('style');
-            style.innerHTML = '@page { size: landscape; margin-top: 245px; margin-left: 290px; }';
-            //style.innerHTML = '@page { size: landscape; margin-top: 245px; margin-right: 0; margin-left: 300px; scale: 102 }';
-            //style.innerHTML = '@page { size: landscape; margin-top: 245px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 27%; scale: 75%; }';
-            // style.innerHTML = '@page { size: landscape; margin-top: 100px; position: absolute; top: 0; left: 0; width: 100%; height: auto; margin-left: 25%; }';
-            document.head.appendChild(style);
-    
-            window.print();
-            
-            
-            document.body.innerHTML = originalContent;
-            document.head.removeChild(style);
-
-            location.reload();
-    }
-
-    //deleting a record
-    function deleteRecord(checkNumber) {
-        if (confirm('Are you sure you want to delete this record?')) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete_record.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    //alert(xhr.responseText);
-                    // Remove the deleted record from the list
-                    var recordElement = document.getElementById('record-' + checkNumber);
-                    if (recordElement) {
-                        recordElement.remove();
-                    }
-                } else {
-                    alert('An error occurred while deleting the record.');
-                }
-            };
-    
-            xhr.send('check_number=' + checkNumber);
+            }
         }
     }
-
-    // NO PURPOSE CODE
-    //amount to words for reprint
-    // function numberToWords(amount) {
-    //     const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-    //     const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-    //     const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+}
     
-    //     // Function to convert a number less than 1000 to words
-    //     function convertLessThanOneThousand(num) {
-    //         let words = '';
-    //         if (num >= 100) {
-    //             words += ones[Math.floor(num / 100)] + ' hundred ';
-    //             num %= 100;
-    //         }
-    //         if (num >= 20) {
-    //             words += tens[Math.floor(num / 10)] + ' ';
-    //             num %= 10;
-    //         }
-    //         if (num >= 10) {
-    //             words += teens[num - 10] + ' ';
-    //             num = 0;
-    //         }
-    //         if (num > 0) {
-    //             words += ones[num] + ' ';
-    //         }
-    //         return words.trim();
-    //     }
-    
-    //     // Function to convert the decimal part (cents) to words
-    //     function convertCents(cents) {
-    //         if (cents === 0) {
-    //             return 'zero cents';
-    //         } else if (cents === 1) {
-    //             return 'one cent';
-    //         } else {
-    //             return convertLessThanOneThousand(cents) + ' cents';
-    //         }
-    //     }
-    
-    //     // Split amount into integer and decimal parts
-    //     let integerPart = Math.floor(amount);
-    //     let decimalPart = Math.round((amount - integerPart) * 100);
-    
-    //     // Convert integer part to words
-    //     let words = convertLessThanOneThousand(integerPart) + ' pesos';
-    
-    //     // Convert decimal part to words
-    //     if (decimalPart > 0) {
-    //         words += ' and ' + convertCents(decimalPart);
-    //     }
-    
-    //     return words;
-    // }
 
 
-    //hail hydra database retrieval
-    document.getElementById('dvNumberInput').addEventListener('change', function() {
-        var dvNumber = this.value;
-        //if (event.key === 'Enter' || event.key === 'Tab') {
-            fetchDetails(dvNumber);
-        //}
-    });
-    document.getElementById('dvNumberInput').addEventListener('input', function() {
-        var dvNumber = this.value;
-        //if (event.key === 'Enter' || event.key === 'Tab') {
-            fetchDetails(dvNumber);
-        //}
-    });
+// Function for Summary Print Report
+function printReport(){
+    var printContent = document.getElementById("tblreport").innerHTML;
+    var originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+
+    var style = document.createElement('style');
+    style.innerHTML = '@page { size: portrait; max-width: 75%; height: auto; margin: 50px;  }';
+    document.head.appendChild(style);
+
+    window.print();
     
-    function fetchDetails(dvNumber) {
+    document.body.innerHTML = originalContent;
+    document.head.removeChild(style);
+}
+
+
+// Function for Current Date
+function setCurrentDate() {
+    const dateInput = document.getElementById('chequeDateInput');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+}
+
+
+// Function for Printing in Cheque History
+function printchequeHistory(chequeNum) {
+    var content = document.getElementById(chequeNum);
+    var printContent = content.innerHTML;
+    var originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+
+    var style = document.createElement('style');
+    style.innerHTML = '@page { size: landscape; margin-top: 245px; margin-left: 290px; }';
+    document.head.appendChild(style);
+
+    window.print();
+
+    document.body.innerHTML = originalContent;
+    document.head.removeChild(style);
+
+    location.reload();
+}
+
+
+//Function to Delete Records
+function deleteRecord(checkNumber) {
+    if (confirm('Are you sure you want to delete this record?')) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'fetchDetails.php?dvNumber=' + dvNumber, true);
+        xhr.open('POST', 'delete_record.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
         xhr.onload = function() {
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    
-                    document.getElementById('accountNumberInput').value = response.data.BANK_ACCTNO;
-                    default_account_num = response.data.BANK_ACCTNO;
-                    document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
-                    document.getElementById('payeeInput').value = response.data.PAYEE.toUpperCase();
-                    document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
-                    response.data.BANK === "DBP" ? document.getElementById('cheque').style.backgroundImage = "url(DBPcheque.jpg)" : document.getElementById('cheque').style.backgroundImage = "url(chequetemplate.jpg)";
-                    //document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
-                    updateAmountInWords();
-                    setCurrentDate();
-                    updateCheque();
-                } else {
-                    //alert('No details found for this DV number');
-                    document.getElementById('accountNumberInput').value = 'No details found for this DV number';
-                    document.getElementById('checkNumberInput').value = 'No details found for this DV number';
-                    document.getElementById('payeeInput').value = 'No details found for this DV number';
-                    document.getElementById('amountInput').value = null;
+                //alert(xhr.responseText);
+                // Remove the deleted record from the list
+                var recordElement = document.getElementById('record-' + checkNumber);
+                if (recordElement) {
+                    recordElement.remove();
                 }
-            }
-        };
-        xhr.send();
-    }
-
-
-
-    //LOGGING OUT
-    function confirmLogout() {
-        const confirmation = confirm("Are you sure you want to log out?");
-        if (confirmation) {
-            logout();
-        }
-    }
-
-    function logout() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'logout.php', true);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                window.location.href = 'index.php';
-            }
-        };
-
-        xhr.send();
-    }
-    
-    
-
-
-
-    // JS FOR SHOW PASSWORD
-
-    function togglePasswordVisibility() {
-        var passwordInput = document.getElementById('password');
-        var showPassCheckbox = document.getElementById('showPass');
-        
-        if (showPassCheckbox.checked) {
-          passwordInput.type = 'text';
-        } else {
-          passwordInput.type = 'password';
-        }
-      }
-
-
-    // function showpassword(){
-    //     document.getElementById('showPass').click();
-    //     var x = document.getElementById("password");
-    //     if (x.type === "password"){
-    //         x.type = "text";
-    //     }else{
-    //         x.type = "password";
-    //     }
-    // }
-
-
-
-
-
-    // JS FOR TESTING TABLE
-
-    let currentPage = 1;
-    let entriesPerPage = 5;
-    let maxDisplayedPages = 3;
-
-    function updateEntries() {
-        entriesPerPage = document.getElementById('entries').value;
-        currentPage = 1; // Reset to first page on filter change
-        loadData();
-    }
-
-    function loadData() {
-        const searchValue = document.getElementById('searchvalue').value;
-        const params = new URLSearchParams({
-            page: currentPage,
-            entries: entriesPerPage,
-            search: searchValue
-        });
-
-        fetch(`fetch_data.php?${params.toString()}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.getElementById('table-body');
-                tbody.innerHTML = '';
-                data.records.forEach(record => {
-                    const formattedAmount = parseFloat(record.amount).toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
-                    const formattedDate = record.date.replace(/\//g, ' ');
-                    const amountInWords = amountToWords(record.amount);
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${record.check_number}</td>
-                        <td>${record.payee}</td>
-                        <td>${formattedAmount}</td>
-                        <td>${record.date}</td>
-                        <td>${record.dv_number}</td>
-                        <td>${record.account_number}</td>
-                        <td class='action-btn-container'>
-                            <button class='action-button-green' onclick='printchequeHistory(${record.check_id})'>Reprint</button>
-                            <button class='action-button-red' onclick='deleteRecord(${record.check_id})'>Delete</button>
-                        </td>
-                        
-                            <div hidden id="cheque">
-                                <div id="${record.check_id}">
-                                    <div class="cheque-field" id="accountNumber">${record.account_number}</div>
-                                    <div class="cheque-field" id="payee">***${record.payee}***</div>
-                                    <div class="cheque-field" id="amount">${formattedAmount}</div>
-                                    <div class="cheque-field" id="amountWords">\
-                                        ${amountInWords}
-                                    </div>                
-                                    <div class="cheque-field" id="chequeDate">${formattedDate}</div>
-                                    <div class="cheque-field" id="dvNumber">${record.dv_number}</div>
-                                    <div class="cheque-field" id="checkNumber">${record.check_number}</div>
-                                </div>
-                            </div>
-                        
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                // Update entries count
-                const startEntry = (currentPage - 1) * entriesPerPage + 1;
-                const endEntry = Math.min(currentPage * entriesPerPage, data.records.length + (currentPage - 1) * entriesPerPage);
-                document.getElementById('start-entry').textContent = startEntry;
-                document.getElementById('end-entry').textContent = endEntry;
-                document.getElementById('total-entries').textContent = data.totalEntries;
-
-                renderPagination(data.totalPages);
-            });
-    }
-
-    
-    function renderPagination(totalPages) {
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';
-    
-        // Previous page button
-        if (currentPage > 1) {
-            const prevButton = document.createElement('a');
-            prevButton.href = '#';
-            prevButton.textContent = 'Prev';
-            prevButton.addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    loadData(); // Load data for the previous page
-                }
-            });
-            pagination.appendChild(prevButton);
-        }
-    
-        // Numbered page links
-        const pageNumbers = document.createElement('span');
-        pageNumbers.id = 'page-numbers';
-    
-        // Calculate start and end for centered display
-        let startPage = Math.max(1, currentPage - 1); // Adjusted to show 1 page before current
-        let endPage = Math.min(totalPages, startPage + 2); // Show up to 3 pages
-    
-        if (endPage - startPage + 1 < 3) {
-            startPage = Math.max(1, endPage - 2);
-        }
-    
-        // First page link
-        if (startPage > 1) {
-            const firstPage = document.createElement('a');
-            firstPage.href = '#';
-            firstPage.textContent = '1';
-            firstPage.addEventListener('click', function() {
-                currentPage = 1;
-                loadData(); // Load data for the first page
-            });
-            pageNumbers.appendChild(firstPage);
-    
-            if (startPage > 2) {
-                const ellipsis = document.createElement('span');
-                ellipsis.textContent = ' . . . ';
-                pageNumbers.appendChild(ellipsis);
-            }
-        }
-    
-        // Middle page links
-        for (let i = startPage; i <= endPage; i++) {
-            const pageLink = document.createElement('a');
-            pageLink.href = '#';
-            pageLink.textContent = i;
-            if (i === currentPage) {
-                pageLink.classList.add('current-page');
-            }
-            pageLink.addEventListener('click', function() {
-                currentPage = i;
-                loadData(); // Load data for the selected page
-            });
-            pageNumbers.appendChild(pageLink);
-        }
-    
-        // Last page link
-        if (endPage < totalPages) {
-            if (endPage < totalPages - 1) {
-                const ellipsis = document.createElement('span');
-                ellipsis.textContent = ' . . . ';
-                pageNumbers.appendChild(ellipsis);
-            }
-    
-            const lastPage = document.createElement('a');
-            lastPage.href = '#';
-            lastPage.textContent = totalPages;
-            lastPage.addEventListener('click', function() {
-                currentPage = totalPages;
-                loadData(); // Load data for the last page
-            });
-            pageNumbers.appendChild(lastPage);
-        }
-    
-        pagination.appendChild(pageNumbers);
-    
-        // Next page button
-        if (currentPage < totalPages) {
-            const nextButton = document.createElement('a');
-            nextButton.href = '#';
-            nextButton.textContent = 'Next';
-            nextButton.addEventListener('click', function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    loadData(); // Load data for the next page
-                }
-            });
-            pagination.appendChild(nextButton);
-        }
-    
-        // Create a separate div for the input
-        const jumpToPageDiv = document.createElement('div');
-        jumpToPageDiv.classList.add('jump-to-page');
-        pagination.appendChild(jumpToPageDiv);
-
-        // Label for current page input
-        const currentPageLabel = document.createElement('label');
-        currentPageLabel.textContent = 'Current Page: ';
-        jumpToPageDiv.appendChild(currentPageLabel);
-    
-        // Input for jumping to specific page
-        const currentPageInput = document.createElement('input');
-        currentPageInput.type = 'number';
-        currentPageInput.value = currentPage;
-        currentPageInput.min = 1;
-        currentPageInput.max = totalPages;
-        currentPageInput.classList.add('page-input');
-        currentPageInput.addEventListener('change', function() {
-            let page = parseInt(currentPageInput.value);
-            if (page >= 1 && page <= totalPages) {
-                currentPage = page;
-                loadData(); // Load data for the entered page
             } else {
-                currentPageInput.value = currentPage; // Revert to current page if invalid input
+                alert('An error occurred while deleting the record.');
             }
-        });
-        jumpToPageDiv.appendChild(currentPageInput);
-    }
-    
-    
-  
+        };
 
-    document.getElementById('searchvalue').addEventListener('keyup', () => {
-        currentPage = 1; // Reset to first page on search
-        loadData();
+        xhr.send('check_number=' + checkNumber);
+    }
+}
+
+    
+
+
+// Function for Retrieval of data in Hail Hydra Database
+// ====================================================================================
+//hail hydra database retrieval
+document.getElementById('dvNumberInput').addEventListener('change', function() {
+    var dvNumber = this.value;
+    //if (event.key === 'Enter' || event.key === 'Tab') {
+        fetchDetails(dvNumber);
+    //}
+});
+document.getElementById('dvNumberInput').addEventListener('input', function() {
+    var dvNumber = this.value;
+    //if (event.key === 'Enter' || event.key === 'Tab') {
+        fetchDetails(dvNumber);
+    //}
+});
+
+function fetchDetails(dvNumber) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'fetchDetails.php?dvNumber=' + dvNumber, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                
+                document.getElementById('accountNumberInput').value = response.data.BANK_ACCTNO;
+                default_account_num = response.data.BANK_ACCTNO;
+                document.getElementById('checkNumberInput').value = response.data.CHECK_NUMBER;
+                document.getElementById('payeeInput').value = response.data.PAYEE.toUpperCase();
+                document.getElementById('amountInput').value = response.data.FINAL_AMOUNT;
+                response.data.BANK === "DBP" ? document.getElementById('cheque').style.backgroundImage = "url(DBPcheque.jpg)" : document.getElementById('cheque').style.backgroundImage = "url(chequetemplate.jpg)";
+                //document.getElementById('chequeDateInput').value = response.data.CHECK_DATE;
+                updateAmountInWords();
+                setCurrentDate();
+                updateCheque();
+            } else {
+                //alert('No details found for this DV number');
+                document.getElementById('accountNumberInput').value = 'No details found for this DV number';
+                document.getElementById('checkNumberInput').value = 'No details found for this DV number';
+                document.getElementById('payeeInput').value = 'No details found for this DV number';
+                document.getElementById('amountInput').value = null;
+            }
+        }
+    };
+    xhr.send();
+}
+// ====================================================================================
+
+
+
+
+// Function to Logout
+// ====================================================================================
+function confirmLogout() {
+    const confirmation = confirm("Are you sure you want to log out?");
+    if (confirmation) {
+        logout();
+    }
+}
+
+function logout() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'logout.php', true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            window.location.href = 'index.php';
+        }
+    };
+
+    xhr.send();
+}
+// ====================================================================================
+    
+
+
+
+//Function to Show Password
+
+function togglePasswordVisibility() {
+    var passwordInput = document.getElementById('password');
+    var showPassCheckbox = document.getElementById('showPass');
+    
+    if (showPassCheckbox.checked) {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+    }
+
+
+   
+
+
+
+//Function for Data Table
+// ====================================================================================
+let currentPage = 1;
+let entriesPerPage = 5;
+let maxDisplayedPages = 3;
+
+function updateEntries() {
+    entriesPerPage = document.getElementById('entries').value;
+    currentPage = 1; // Reset to first page on filter change
+    loadData();
+}
+
+function loadData() {
+    const searchValue = document.getElementById('searchvalue').value;
+    const params = new URLSearchParams({
+        page: currentPage,
+        entries: entriesPerPage,
+        search: searchValue
     });
 
-    window.onload = loadData;
-    
+    fetch(`fetch_data.php?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            data.records.forEach(record => {
+                const formattedAmount = parseFloat(record.amount).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                const formattedDate = record.date.replace(/\//g, ' ');
+                const amountInWords = amountToWords(record.amount);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${record.check_number}</td>
+                    <td>${record.payee}</td>
+                    <td>${formattedAmount}</td>
+                    <td>${record.date}</td>
+                    <td>${record.dv_number}</td>
+                    <td>${record.account_number}</td>
+                    <td class='action-btn-container'>
+                        <button class='action-button-green' onclick='printchequeHistory(${record.check_id})'>Reprint</button>
+                        <button class='action-button-red' onclick='deleteRecord(${record.check_id})'>Delete</button>
+                    </td>
+                    
+                        <div hidden id="cheque">
+                            <div id="${record.check_id}">
+                                <div class="cheque-field" id="accountNumber">${record.account_number}</div>
+                                <div class="cheque-field" id="payee">***${record.payee}***</div>
+                                <div class="cheque-field" id="amount">${formattedAmount}</div>
+                                <div class="cheque-field" id="amountWords">\
+                                    ${amountInWords}
+                                </div>                
+                                <div class="cheque-field" id="chequeDate">${formattedDate}</div>
+                                <div class="cheque-field" id="dvNumber">${record.dv_number}</div>
+                                <div class="cheque-field" id="checkNumber">${record.check_number}</div>
+                            </div>
+                        </div>
+                    
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update entries count
+            const startEntry = (currentPage - 1) * entriesPerPage + 1;
+            const endEntry = Math.min(currentPage * entriesPerPage, data.records.length + (currentPage - 1) * entriesPerPage);
+            document.getElementById('start-entry').textContent = startEntry;
+            document.getElementById('end-entry').textContent = endEntry;
+            document.getElementById('total-entries').textContent = data.totalEntries;
+
+            renderPagination(data.totalPages);
+        });
+}
+
+
+function renderPagination(totalPages) {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    // Previous page button
+    if (currentPage > 1) {
+        const prevButton = document.createElement('a');
+        prevButton.href = '#';
+        prevButton.textContent = 'Prev';
+        prevButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadData(); // Load data for the previous page
+            }
+        });
+        pagination.appendChild(prevButton);
+    }
+
+    // Numbered page links
+    const pageNumbers = document.createElement('span');
+    pageNumbers.id = 'page-numbers';
+
+    // Calculate start and end for centered display
+    let startPage = Math.max(1, currentPage - 1); // Adjusted to show 1 page before current
+    let endPage = Math.min(totalPages, startPage + 2); // Show up to 3 pages
+
+    if (endPage - startPage + 1 < 3) {
+        startPage = Math.max(1, endPage - 2);
+    }
+
+    // First page link
+    if (startPage > 1) {
+        const firstPage = document.createElement('a');
+        firstPage.href = '#';
+        firstPage.textContent = '1';
+        firstPage.addEventListener('click', function() {
+            currentPage = 1;
+            loadData(); // Load data for the first page
+        });
+        pageNumbers.appendChild(firstPage);
+
+        if (startPage > 2) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = ' . . . ';
+            pageNumbers.appendChild(ellipsis);
+        }
+    }
+
+    // Middle page links
+    for (let i = startPage; i <= endPage; i++) {
+        const pageLink = document.createElement('a');
+        pageLink.href = '#';
+        pageLink.textContent = i;
+        if (i === currentPage) {
+            pageLink.classList.add('current-page');
+        }
+        pageLink.addEventListener('click', function() {
+            currentPage = i;
+            loadData(); // Load data for the selected page
+        });
+        pageNumbers.appendChild(pageLink);
+    }
+
+    // Last page link
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = ' . . . ';
+            pageNumbers.appendChild(ellipsis);
+        }
+
+        const lastPage = document.createElement('a');
+        lastPage.href = '#';
+        lastPage.textContent = totalPages;
+        lastPage.addEventListener('click', function() {
+            currentPage = totalPages;
+            loadData(); // Load data for the last page
+        });
+        pageNumbers.appendChild(lastPage);
+    }
+
+    pagination.appendChild(pageNumbers);
+
+    // Next page button
+    if (currentPage < totalPages) {
+        const nextButton = document.createElement('a');
+        nextButton.href = '#';
+        nextButton.textContent = 'Next';
+        nextButton.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadData(); // Load data for the next page
+            }
+        });
+        pagination.appendChild(nextButton);
+    }
+
+    // Create a separate div for the input
+    const jumpToPageDiv = document.createElement('div');
+    jumpToPageDiv.classList.add('jump-to-page');
+    pagination.appendChild(jumpToPageDiv);
+
+    // Label for current page input
+    const currentPageLabel = document.createElement('label');
+    currentPageLabel.textContent = 'Current Page: ';
+    jumpToPageDiv.appendChild(currentPageLabel);
+
+    // Input for jumping to specific page
+    const currentPageInput = document.createElement('input');
+    currentPageInput.type = 'number';
+    currentPageInput.value = currentPage;
+    currentPageInput.min = 1;
+    currentPageInput.max = totalPages;
+    currentPageInput.classList.add('page-input');
+    currentPageInput.addEventListener('change', function() {
+        let page = parseInt(currentPageInput.value);
+        if (page >= 1 && page <= totalPages) {
+            currentPage = page;
+            loadData(); // Load data for the entered page
+        } else {
+            currentPageInput.value = currentPage; // Revert to current page if invalid input
+        }
+    });
+    jumpToPageDiv.appendChild(currentPageInput);
+}
+
+
+
+
+document.getElementById('searchvalue').addEventListener('keyup', () => {
+    currentPage = 1; // Reset to first page on search
+    loadData();
+});
+
+window.onload = loadData;
+// ====================================================================================

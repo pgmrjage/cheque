@@ -1,5 +1,5 @@
 <?php
-require "accDB.php"; // Ensure this file establishes the $conn connection
+require "accDB.php";
 
 // Check connection
 if ($conn->connect_error) {
